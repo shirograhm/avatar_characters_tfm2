@@ -6,5 +6,13 @@
   "asset/base/style/champion_view": {
     "remapping": "asset/avatar_wan_tfm2/style/champion_view",
     "type": "merge"
+  },
+  "asset/base/ui/banpick/champion_stat_icon#sheet": {
+    "remapping": "asset/avatar_wan_tfm2/ui/banpick/champion_stat_icon#sheet",
+    "type": "override"
+  },
+  "asset/base/ui/banpick/champion_stat_icon#data": {
+    "remapping": "asset/avatar_wan_tfm2/ui/banpick/champion_stat_icon#data",
+    "type": "override"
   }
 }

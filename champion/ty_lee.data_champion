@@ -1,0 +1,105 @@
+{
+  "id": "ty_lee",
+  "category": "Melee",
+  "tags": [
+    "AD",
+    "Melee"
+  ],
+  "sprite": "asset/avatar_wan_tfm2/aseprite_resources/champions/ty_lee",
+  "anim_prefix": "",
+  "skill_icons": [
+    "asset/avatar_wan_tfm2/icons/ty_lee_skill",
+    "asset/avatar_wan_tfm2/icons/ty_lee_skill2",
+    "asset/avatar_wan_tfm2/icons/ty_lee_ult"
+  ],
+  "stat": {
+    "attack": 68,
+    "magic_power": 0,
+    "hp": 850,
+    "defence": 28,
+    "magic_resistance": 20,
+    "move_speed": 950,
+    "hp_regen": 0,
+    "stack": 0,
+    "crit_chance": 0
+  },
+  "growth": {
+    "attack": 7,
+    "magic_power": 0,
+    "hp": 95,
+    "defence": 8,
+    "magic_resistance": 4,
+    "move_speed": 2,
+    "hp_regen": 0,
+    "stack": 0,
+    "crit_chance": 0
+  },
+  "attack": {
+    "action_name": "attack",
+    "description": "#asset/base/text/champion?description.ty_lee.attack",
+    "duration": 24,
+    "cooltime": 60,
+    "start_timing": 12,
+    "cancelable": false,
+    "range": 24000,
+    "casting_type": "Targeting",
+    "casting_target": "Enemy",
+    "attack_type": "BaseAttack",
+    "effect": {
+      "type": "Native",
+      "effect_ref": "ty_lee_chi_block_hit"
+    }
+  },
+  "skill": {
+    "action_name": "skill1",
+    "description": "#asset/base/text/champion?description.ty_lee.skill",
+    "duration": 30,
+    "cooltime": 600,
+    "start_timing": 8,
+    "cancelable": false,
+    "range": 24000,
+    "casting_type": "Targeting",
+    "casting_target": "Enemy",
+    "attack_type": "Skill",
+    "effect": {
+      "type": "Native",
+      "effect_ref": "ty_lee_three_point_strike"
+    }
+  },
+  "skill2": {
+    "action_name": "skill2",
+    "description": "#asset/base/text/champion?description.ty_lee.skill2",
+    "duration": 12,
+    "cooltime": 300,
+    "start_timing": 1,
+    "cancelable": false,
+    "range": 0,
+    "casting_type": "None",
+    "casting_target": "AllyOnlySelf",
+    "attack_type": "Skill",
+    "can_use_with_move": true,
+    "effect": {
+      "type": "Native",
+      "effect_ref": "ty_lee_circus_freak_cast"
+    }
+  },
+  "ult": {
+    "action_name": "ult",
+    "description": "#asset/base/text/champion?description.ty_lee.ult",
+    "duration": 24,
+    "cooltime": 2700,
+    "start_timing": 4,
+    "cancelable": false,
+    "range": 80000,
+    "casting_type": "Targeting",
+    "casting_target": "EnemyChampion",
+    "attack_type": "Skill",
+    "effect": {
+      "type": "Native",
+      "effect_ref": "ty_lee_balancing_act"
+    }
+  },
+  "view_effects": [],
+  "view_buffs": [],
+  "view_projectiles": []
+}

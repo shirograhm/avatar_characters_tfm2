@@ -6,6 +6,12 @@
         "skill1": "The Avatar Cycle",
         "skill2": "Spirit Step",
         "ult": "Harmonic Convergence"
+      },
+      "ty_lee": {
+        "attack": "Chi Blocking",
+        "skill1": "Three Point Strike",
+        "skill2": "Circus Freak",
+        "ult": "Balancing Act"
       }
     },
     "description": {
@@ -15,6 +21,13 @@
         "skill": "Wan swaps to the next element in-sequence.\n<#ff4d2cff>Fire<>: Burn for <#a974ffff>12 <#a974ffff>(+30% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> magic damage<> over <#e8a800ff>3 seconds<>.\n<#ffe599ff>Air<>: Gain <#ffffffff>6% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> movement speed<> for <#e8a800ff>4 seconds<> (max 4 stacks).\n<#3c78d8ff>Water<>: Heal for <#60e84dff>3<> + <#60e84dff>3%<> of your <#60e84dff>missing health<>.\n<#38871dff>Earth<>: Basic attacks deal <#e8a800ff>40%<> of their damage to nearby enemies.",
         "skill2": "Wan dashes a short distance in any direction. For the next <#e8a800ff>3 seconds<>, he stores <#d94c49ff>80% of his damage taken<> and gains <#ceff99ff>10% <#ff9028ff>(+0.03% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> bonus <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> attack speed<>. When <#e8a800ff>Spirit Step<> expires, Wan <#60e84dff>heals himself<> for <#60e84dff>30<> + <#60e84dff>80%<> of the stored damage.",
         "ult": "Wan channels Raava's full power, gaining a <#cab944ff>300 <#a974ffff>(+60% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>(+6% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> health shield<> for <#e8a800ff>6 seconds<>. For the duration, Wan's basic attacks apply the effects of <#e8a800ff>all 4 elements<>. Harmonic Convergence's duration is extended by <#e8a800ff>1.5 seconds<> whenever Wan gets a <#e8a800ff>takedown<>."
+      },
+      "ty_lee": {
+        "attack": "Ty Lee's basic attacks deal <#ff9028ff>100% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD physical damage<> and apply a stack of <#e8a800ff>Chi Block<> to enemy champions, up to <#e8a800ff>4<> times. The fourth stack consumes them all to deal <#a974ffff>20 bonus magic damage<> and <#d94c49ff>stun<> the target for <#e8a800ff>0.5 seconds<>.",
+        "name": "Ty Lee",
+        "skill": "Ty Lee strikes the target <#e8a800ff>3 times<> in quick succession, each dealing <#ff9028ff>45 (+45% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> physical damage and applying <#e8a800ff>Chi Block<>. Each strike has a <#d45656ff>(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>) chance<> to <#d45656ff>critically strike<> for <#e8a800ff>20% bonus damage<>.",
+        "skill2": "For the next <#e8a800ff>2 seconds<>, Ty Lee takes <#d45656ff>(0 + <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)%<> less damage from basic attacks. At the end of the duration, she <#cab944ff>shields herself<> for <#cab944ff>120 <#ff9028ff>(+20% AD)<> health<> for <#e8a800ff>2 seconds<>.",
+        "ult": "Ty Lee <#ceff99ff>dashes<> to the <#60e84dff>highest health<> enemy champion within <#e8a800ff>80 range<>, dealing <#ff9028ff>180 (+80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD) physical damage<> and <#d94c49ff>silencing<> them for <#e8a800ff>1.5 seconds<>. Her next attack always <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> and applies <#e8a800ff>Chi Block<> twice."
       }
     }
   }

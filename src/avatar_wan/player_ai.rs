@@ -1,7 +1,8 @@
 use mod_api_stable::*;
 
-use crate::constants::*;
-use crate::element;
+use super::constants::*;
+use super::CHAMPION_KEY;
+use crate::util::has_buff;
 
 enum Plan {
     Keep,
@@ -14,12 +15,11 @@ pub struct AggressiveWan;
 
 impl AggressiveWan {
     fn committed(sim: &StableSim<'_>, entity: usize) -> bool {
-        element::has_buff(sim, entity, STEP_BUFF)
-            || element::has_buff(sim, entity, CONVERGENCE_BUFF)
+        has_buff(sim, entity, STEP_BUFF) || has_buff(sim, entity, CONVERGENCE_BUFF)
     }
 
     fn converging(sim: &StableSim<'_>, entity: usize) -> bool {
-        element::has_buff(sim, entity, CONVERGENCE_BUFF)
+        has_buff(sim, entity, CONVERGENCE_BUFF)
     }
 
     fn effective_hp_percent(sim: &StableSim<'_>, entity: usize) -> Option<usize> {

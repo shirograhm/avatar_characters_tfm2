@@ -33,14 +33,17 @@ $Include = @(
     "icons",
     "style",
     "text",
+    "ui",
     "better_mod_menu_profile.json",
     "profile_icon.png",
     "thumbnail.png"
 )
 
-# Editable source that the engine never reads. `.aseprite` is deliberately not
-# here: the engine can read those directly, so they ship.
-$ExcludeExtensions = @(".xcf", ".psd", ".bak", ".orig")
+# Editable source. `.aseprite` is in here even though the engine can read it
+# directly: every sheet and icon has an exported `.png` beside it, and that is
+# what ships. Keep the exports current — an `.aseprite` newer than its `.png`
+# now means the edits in it never reach the game.
+$ExcludeExtensions = @(".aseprite", ".xcf", ".psd", ".bak", ".orig")
 # ---------------------------------------------------------------------------
 
 $deploy = Join-Path (Join-Path $GameDir "mods") $modId

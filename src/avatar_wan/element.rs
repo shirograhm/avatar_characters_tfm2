@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 
-use crate::constants::*;
+use super::constants::*;
+use crate::util::{buff_stacks, percent_of};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Element {
@@ -47,32 +48,11 @@ pub fn current_of(entity: &StableEntity<'_, '_>) -> Option<Element> {
         .find_map(|buff| Element::from_buff_name(buff.name()))
 }
 
-pub fn is_wan(entity: &StableEntity<'_, '_>) -> bool {
-    entity.is_champion()
-        && entity
-            .name()
-            .is_some_and(|name| name.trim().to_ascii_lowercase().replace(' ', "_") == CHAMPION_KEY)
-}
-
 pub fn attune(sim: &mut StableSim<'_>, entity: usize, element: Element) {
     for stale in CYCLE {
         sim.entity_remove_buff(entity, stale.buff_name());
     }
     sim.add_buff(entity, &BuffV1::named(element.buff_name()));
-}
-
-pub fn buff_stacks(sim: &StableSim<'_>, entity: usize, name: &str) -> usize {
-    let Some(entity) = sim.get_entity(entity) else {
-        return 0;
-    };
-    (0..entity.buff_count())
-        .filter_map(|index| entity.buff_at(index))
-        .filter(|buff| buff.name() == name)
-        .count()
-}
-
-pub fn has_buff(sim: &StableSim<'_>, entity: usize, name: &str) -> bool {
-    buff_stacks(sim, entity, name) > 0
 }
 
 pub fn proc(
@@ -143,7 +123,7 @@ pub fn proc(
             };
             for tick in 1..=BURN_TICKS {
                 sim.queue_effect(
-                    crate::effects::FIRE_BURN_TICK,
+                    super::effects::FIRE_BURN_TICK,
                     AttackTypeV1::Dot,
                     caster,
                     &input,
