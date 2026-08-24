@@ -15,9 +15,9 @@
   "stat": {
     "attack": 68,
     "magic_power": 0,
-    "hp": 850,
-    "defence": 28,
-    "magic_resistance": 20,
+    "hp": 880,
+    "defence": 29,
+    "magic_resistance": 19,
     "move_speed": 950,
     "hp_regen": 0,
     "stack": 0,
@@ -26,8 +26,8 @@
   "growth": {
     "attack": 7,
     "magic_power": 0,
-    "hp": 95,
-    "defence": 8,
+    "hp": 96,
+    "defence": 9,
     "magic_resistance": 4,
     "move_speed": 2,
     "hp_regen": 0,
@@ -41,7 +41,7 @@
     "cooltime": 60,
     "start_timing": 12,
     "cancelable": false,
-    "range": 24000,
+    "range": 17000,
     "casting_type": "Targeting",
     "casting_target": "Enemy",
     "attack_type": "BaseAttack",
@@ -53,11 +53,11 @@
   "skill": {
     "action_name": "skill1",
     "description": "#asset/base/text/champion?description.ty_lee.skill",
-    "duration": 30,
-    "cooltime": 600,
-    "start_timing": 8,
+    "duration": 45,
+    "cooltime": 300,
+    "start_timing": 10,
     "cancelable": false,
-    "range": 24000,
+    "range": 17000,
     "casting_type": "Targeting",
     "casting_target": "Enemy",
     "attack_type": "Skill",
@@ -70,36 +70,117 @@
     "action_name": "skill2",
     "description": "#asset/base/text/champion?description.ty_lee.skill2",
     "duration": 12,
-    "cooltime": 300,
+    "cooltime": 480,
     "start_timing": 1,
     "cancelable": false,
-    "range": 0,
-    "casting_type": "None",
-    "casting_target": "AllyOnlySelf",
+    "range": 40000,
+    "casting_type": "Direction",
+    "casting_target": "BothWithoutTower",
     "attack_type": "Skill",
-    "can_use_with_move": true,
     "effect": {
-      "type": "Native",
-      "effect_ref": "ty_lee_circus_freak_cast"
+      "type": "Combine",
+      "effects": [
+        {
+          "type": "CasterAnimation",
+          "name": "skill2_dash",
+          "tick": 12
+        },
+        {
+          "type": "MoveTo",
+          "speed": 5600,
+          "range": 40000,
+          "end_effects": [
+            {
+              "type": "RemoveCasterAnimation",
+              "name": "skill2_dash"
+            }
+          ]
+        },
+        {
+          "type": "Native",
+          "effect_ref": "ty_lee_lightfooted_cast"
+        }
+      ]
     }
   },
   "ult": {
     "action_name": "ult",
     "description": "#asset/base/text/champion?description.ty_lee.ult",
-    "duration": 24,
+    "duration": 32,
     "cooltime": 2700,
     "start_timing": 4,
     "cancelable": false,
-    "range": 80000,
+    "range": 120000,
     "casting_type": "Targeting",
     "casting_target": "EnemyChampion",
     "attack_type": "Skill",
     "effect": {
-      "type": "Native",
-      "effect_ref": "ty_lee_balancing_act"
+      "type": "Combine",
+      "effects": [
+        {
+          "type": "Native",
+          "effect_ref": "ty_lee_balancing_act"
+        },
+        {
+          "type": "CasterAnimation",
+          "name": "ult_dash",
+          "tick": 32
+        },
+        {
+          "type": "MoveToTarget",
+          "speed": 4500,
+          "range": 120000,
+          "end_effects": [
+            {
+              "type": "RemoveCasterAnimation",
+              "name": "ult_dash"
+            },
+            {
+              "type": "Native",
+              "effect_ref": "ty_lee_balancing_act_land"
+            }
+          ]
+        }
+      ]
     }
   },
   "view_effects": [],
-  "view_buffs": [],
+  "view_buffs": [
+    {
+      "type": "Animated",
+      "name": "ty_lee_chi_block_1",
+      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "tag": "stack1",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "ty_lee_chi_block_2",
+      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "tag": "stack2",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "ty_lee_chi_block_3",
+      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "tag": "stack3",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "ty_lee_chi_block_break",
+      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block_break",
+      "tag": "break",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "ty_lee_lightfooted",
+      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_shield",
+      "tag": "shield",
+      "z": 1
+    }
+  ],
   "view_projectiles": []
 }

@@ -28,8 +28,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_native_effect(ty_lee::CHI_BLOCK_HIT, ty_lee::ChiBlocking);
     reg.add_native_effect(ty_lee::THREE_POINT_STRIKE, ty_lee::ThreePointStrike);
     reg.add_native_effect(ty_lee::THREE_POINT_STRIKE_HIT, ty_lee::ThreePointStrikeHit);
-    reg.add_native_effect(ty_lee::CIRCUS_FREAK, ty_lee::CircusFreak);
+    reg.add_native_effect(ty_lee::LIGHTFOOTED, ty_lee::Lightfooted);
     reg.add_native_effect(ty_lee::BALANCING_ACT, ty_lee::BalancingAct);
+    reg.add_native_effect(ty_lee::BALANCING_ACT_LAND, ty_lee::BalancingActLand);
 
     reg.set_match_hook(match_hook::ModTick);
 
@@ -37,9 +38,10 @@ fn init(host: &StableHost) -> StableMod {
     // Wan's own athletes, so no other champion's AI is touched.
     reg.add_player_input_ai(avatar_wan::player_ai::AggressiveWan);
 
-    // Balancing Act is a `Targeting` ult so the engine will dash her; this puts
-    // the "highest health" pick back in front of the cast.
-    reg.add_player_input_ai(crate::ty_lee::player_ai::AimBalancingAct);
+    // Puts her own picks in front of the base AI's: the two dashes need a cast
+    // target before the engine will move her, and her basic attack should stay
+    // on an enemy one stack short of the Chi Block stun.
+    reg.add_player_input_ai(crate::ty_lee::player_ai::AimTyLee);
 
     reg
 }
