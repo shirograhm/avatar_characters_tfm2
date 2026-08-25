@@ -70,7 +70,7 @@
     "action_name": "skill2",
     "description": "#asset/base/text/champion?description.ty_lee.skill2",
     "duration": 12,
-    "cooltime": 480,
+    "cooltime": 720,
     "start_timing": 1,
     "cancelable": false,
     "range": 40000,
@@ -106,7 +106,7 @@
   "ult": {
     "action_name": "ult",
     "description": "#asset/base/text/champion?description.ty_lee.ult",
-    "duration": 32,
+    "duration": 54,
     "cooltime": 2700,
     "start_timing": 4,
     "cancelable": false,
@@ -128,12 +128,17 @@
         },
         {
           "type": "MoveToTarget",
-          "speed": 4500,
+          "speed": 4000,
           "range": 120000,
           "end_effects": [
             {
               "type": "RemoveCasterAnimation",
               "name": "ult_dash"
+            },
+            {
+              "type": "CasterAnimation",
+              "name": "ult_impact",
+              "tick": 20
             },
             {
               "type": "Native",

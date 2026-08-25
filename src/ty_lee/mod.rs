@@ -56,7 +56,7 @@ pub const LIGHTFOOTED_RANGE: u64 = 40_000;
 /// does need one - see `tick`.
 pub const LIGHTFOOTED_BUFF: &str = "ty_lee_lightfooted";
 pub const LIGHTFOOTED_DURATION: usize = 4 * 60;
-pub const LIGHTFOOTED_SHIELD: usize = 200;
+pub const LIGHTFOOTED_SHIELD: usize = 100;
 pub const LIGHTFOOTED_SHIELD_AD_RATIO: usize = 20;
 pub const LIGHTFOOTED_SHIELD_HP_RATIO: usize = 10;
 /// Full mitigation: the ability is written as dodging basic attacks outright.
@@ -78,6 +78,9 @@ pub const BALANCE_AOE_RADIUS: u64 = 30_000;
 /// goes to the target rather than a fixed distance, so she stops on them
 /// instead of sailing past anything closer than `BALANCE_RANGE`, and a
 /// `CasterAnimation` beside it plays the sheet's `ult_dash` tag over the trip.
+/// A second one in the `end_effects` swaps that for `ult_impact` - the spin the
+/// AoE lands on - which is why the action's `duration` has to cover the longest
+/// dash plus that burst rather than the dash alone.
 pub const BALANCE_SILENCE_TICKS: u64 = 90;
 /// Marker carried while the dash is still carrying her in, naming the target it
 /// owes: `ty_lee_balancing_act_inbound|<entity id>`. The hit lands from the
@@ -86,7 +89,7 @@ pub const BALANCE_SILENCE_TICKS: u64 = 90;
 /// re-picking from wherever she ended up.
 pub const BALANCE_INBOUND_PREFIX: &str = "ty_lee_balancing_act_inbound";
 /// Dropped unfired if she never arrives - a stopped dash owes nothing. Well
-/// clear of the longest trip (`BALANCE_RANGE` / speed 4500 = 27 ticks), since
+/// clear of the longest trip (`BALANCE_RANGE` / speed 4000 = 30 ticks), since
 /// expiring early would silently cost her the whole hit.
 pub const BALANCE_INBOUND_TIMEOUT: usize = 90;
 pub const BALANCE_MARK_BUFF: &str = "ty_lee_balancing_act";

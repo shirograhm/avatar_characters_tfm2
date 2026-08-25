@@ -41,7 +41,7 @@ Strike the target 3 times in quick succession, each dealing 40 (+40% AD) physica
 
 **Lightfooted** (Skill 2)
 
-Dash a short distance in any direction, shielding herself for 200 (+20% AD) (+10% HP) health for 4 seconds. While the shield holds, Ty Lee dodges all basic attacks.
+Dash a short distance in any direction, shielding herself for 100 (+20% AD) (+10% HP) health for 4 seconds. While the shield holds, Ty Lee dodges all basic attacks.
 
 **Balancing Act** (Ultimate)
 
