@@ -1,10 +1,10 @@
 {
   "mod_id": "avatar_characters_tfm2",
-  "name": "Avatar Wan",
+  "name": "Avatar Characters",
   "author": "shirograhm",
   "version": "0.1.1",
-  "description": "Adds Wan, the first Avatar, as a draftable champion.",
-  "last_updated": "2026-08-18",
+  "description": "Adds characters from Avatar: The Last Airbender to Teamfight Manager 2.",
+  "last_updated": "2026-08-26",
   "dependencies": [
     {
       "mod_id": "base",
