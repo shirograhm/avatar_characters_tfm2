@@ -4,6 +4,7 @@ use super::*;
 use crate::util::{buff_stacks, has_buff, percent_of, stat_of};
 
 pub const CHI_BLOCK_HIT: &str = "ty_lee_chi_block_hit";
+pub const CHI_BLOCK_STUN: &str = "ty_lee_chi_block_stun";
 pub const THREE_POINT_STRIKE: &str = "ty_lee_three_point_strike";
 pub const THREE_POINT_STRIKE_HIT: &str = "ty_lee_three_point_strike_hit";
 pub const LIGHTFOOTED: &str = "ty_lee_lightfooted_cast";
@@ -36,17 +37,59 @@ fn apply_chi_block(sim: &mut StableSim<'_>, caster: usize, target: usize) {
         CHI_BLOCK_BONUS_MAGIC,
         AttackTypeV1::Skill,
     );
-    sim.apply_cc(target, &CcV1::stun(CHI_BLOCK_STUN_TICKS));
     // The damage above is often what kills them, and a burst started on a
-    // corpse plays over its death animation instead of their death.
-    if sim
+    // corpse plays over its death animation instead of their death. A corpse
+    // is owed no hold either, so both halves go with it.
+    if !sim
         .get_entity(target)
         .is_some_and(|target| target.is_alive() && target.hp().0 > 0)
     {
-        sim.add_buff(
-            target,
-            &BuffV1::timed(CHI_BLOCK_BREAK_VFX_BUFF, CHI_BLOCK_BREAK_VFX_TICKS),
-        );
+        return;
+    }
+
+    sim.add_buff(
+        target,
+        &BuffV1::timed(CHI_BLOCK_BREAK_VFX_BUFF, CHI_BLOCK_BREAK_VFX_TICKS),
+    );
+    // The hold lands as the burst finishes rather than on the hit that set it
+    // off, so the flourish is what visibly locks them up instead of playing
+    // over a stun already running. The delay is that burst's own length, so
+    // the two hand off on the same tick - see `CHI_BLOCK_BREAK_VFX_TICKS`.
+    sim.queue_effect(
+        CHI_BLOCK_STUN,
+        AttackTypeV1::Skill,
+        caster,
+        &InputTargetV1::target(target),
+        CHI_BLOCK_BREAK_VFX_TICKS,
+    );
+}
+
+/// The hold itself, replayed from the effect queue once the break burst has
+/// played out. Split off rather than applied inline because `apply_cc` takes
+/// hold the tick it is called, and the burst wants that half-second first.
+pub struct ChiBlockStun;
+
+impl StableEffectType for ChiBlockStun {
+    fn apply(
+        &self,
+        sim: &mut StableSim<'_>,
+        _rng_seed: u64,
+        _caster_id: usize,
+        input: InputTargetV1,
+    ) {
+        // Half a second is long enough to die in, and the burst is not what
+        // was holding them - anything could have finished them meanwhile.
+        let target = input.target_id;
+        if sim
+            .get_entity(target)
+            .is_some_and(|target| target.is_alive())
+        {
+            sim.apply_cc(target, &CcV1::stun(CHI_BLOCK_STUN_TICKS));
+        }
+    }
+
+    fn expected_cc_time(&self) -> Option<usize> {
+        Some(CHI_BLOCK_STUN_TICKS as usize)
     }
 }
 

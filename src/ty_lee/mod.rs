@@ -18,7 +18,7 @@ pub const CHAMPION_KEY: &str = "ty_lee";
 pub const ATTACK_ACTION_TICKS: usize = 24;
 pub const STRIKE_ACTION_TICKS: usize = 45;
 pub const LIGHTFOOTED_ACTION_TICKS: usize = 12;
-pub const BALANCE_ACTION_TICKS: usize = 68;
+pub const BALANCE_ACTION_TICKS: usize = 54;
 
 // ------------------------------------------------ Chi Blocking (base attack)
 pub const ATTACK_AD_RATIO: usize = 100;
@@ -43,10 +43,13 @@ pub const CHI_BLOCK_VFX_BUFFS: [&str; CHI_BLOCK_MAX_STACKS - 1] = [
     "ty_lee_chi_block_3",
 ];
 /// The set breaking. One-shot, so unlike the stack marks it is timed rather
-/// than reconciled. Its own length, not the stun's: the burst is a flourish on
-/// the hit and wants to stay punchy, so a longer stun leaves the target held
-/// after it has played rather than stretching it out. Keep it equal to the
-/// sheet's 4 frames x 0.125s or the last frame hangs.
+/// than reconciled. Keep it equal to the sheet's 4 frames x 0.125s or the last
+/// frame hangs.
+///
+/// The stun is timed off this rather than the other way round: it is queued to
+/// land the tick the burst finishes, so the flourish is what visibly locks the
+/// target up instead of playing over a hold already running. Change this and
+/// the stun moves with it.
 pub const CHI_BLOCK_BREAK_VFX_BUFF: &str = "ty_lee_chi_block_break";
 pub const CHI_BLOCK_BREAK_VFX_TICKS: usize = 30;
 

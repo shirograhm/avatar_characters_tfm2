@@ -39,7 +39,7 @@
     "description": "#asset/base/text/champion?description.ty_lee.attack",
     "duration": 24,
     "cooltime": 60,
-    "start_timing": 12,
+    "start_timing": 8,
     "cancelable": false,
     "range": 17000,
     "casting_type": "Targeting",
@@ -106,7 +106,7 @@
   "ult": {
     "action_name": "ult",
     "description": "#asset/base/text/champion?description.ty_lee.ult",
-    "duration": 68,
+    "duration": 54,
     "cooltime": 3300,
     "start_timing": 4,
     "cancelable": false,
@@ -138,7 +138,7 @@
             {
               "type": "CasterAnimation",
               "name": "ult_impact",
-              "tick": 34
+              "tick": 20
             },
             {
               "type": "Native",
