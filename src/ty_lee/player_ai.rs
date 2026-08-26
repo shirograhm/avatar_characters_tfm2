@@ -30,11 +30,17 @@
 //! S2 -> S1 -> AA, while an ult that is up gives S2 -> Ult -> S1 -> AA. Nothing
 //! branches.
 //!
-//! That cooldown check is load-bearing, and it is `player.cooldowns()` rather
-//! than `is_valid_input` - the latter does not gate cooldowns and will accept
-//! an ult she does not have. Naming an action she cannot cast locks the match
-//! up, which is a hazard the base AI never faces, because it only ever picks
-//! from what it already holds.
+//! That check is load-bearing, and it is `player.cooldowns()` rather than
+//! `is_valid_input` - the latter does not gate cooldowns and will accept an
+//! ult she does not have. Naming an action she cannot cast locks the match up,
+//! which is a hazard the base AI never faces, because it only ever picks from
+//! what it already holds.
+//!
+//! Cooldowns alone are not the whole of "does she have it", though. A slot she
+//! has not learned yet reports zero ticks remaining, exactly like one that is
+//! off cooldown, so a cooldown-only gate let a level 2 Ty Lee open the combo
+//! and reach for an ult she does not unlock until level 5. The level is the
+//! other half of the check - see `util::ULT_LEVEL`.
 //!
 //! The combo is for champions only. Its opener needs an enemy champion inside
 //! dash range before it will fire, and every step aims at a champion; when
@@ -168,20 +174,25 @@ fn issue(ctx: &mut StableAiContext<'_>, kind: InputKindV1, plan: &Plan) -> Optio
     }
 }
 
-/// Whether a step is actually off cooldown, from the engine's own remaining-tick
-/// counters.
+/// Whether a step is one she actually holds: unlocked at her level, and off
+/// cooldown by the engine's own remaining-tick counters.
 ///
 /// This is the check, not `is_valid_input`. That one does not gate cooldowns:
 /// it will happily accept an ult she does not have, and issuing a cast that
 /// cannot start is what locked a match up. The base AI never hit it because it
 /// only ever picks actions it already holds - the hazard is new the moment a
 /// hook starts naming actions of its own.
-fn ready(cooldowns: (usize, usize, usize, usize), kind: InputKindV1) -> bool {
+///
+/// Both halves are needed. An unlearned slot reads back as zero ticks
+/// remaining, so the cooldown alone says "ready" for every ability she has not
+/// earned yet; the level alone would miss one she has just spent. The basic
+/// attack takes no level - she opens the match with it.
+fn ready(cooldowns: (usize, usize, usize, usize), level: usize, kind: InputKindV1) -> bool {
     let (attack, skill, skill2, ult) = cooldowns;
     match kind {
-        InputKindV1::Skill2 => skill2 == 0,
-        InputKindV1::Ult => ult == 0,
-        InputKindV1::Skill => skill == 0,
+        InputKindV1::Skill2 => skill2 == 0 && level >= crate::util::SKILL2_LEVEL,
+        InputKindV1::Ult => ult == 0 && level >= crate::util::ULT_LEVEL,
+        InputKindV1::Skill => skill == 0 && level >= crate::util::SKILL_LEVEL,
         _ => attack == 0,
     }
 }
@@ -287,6 +298,11 @@ impl StablePlayerAi for AimTyLee {
             // falls back to re-aiming, which can only ever repoint a cast the
             // base AI already decided it could make.
             let cooldowns = player.cooldowns();
+            // Safe to read flat rather than as an `Option`: `player_level` is
+            // an older vtable slot than `player_cooldowns`, so a host that
+            // answered the line above answers this one too, and the combo is
+            // already off entirely when it did not.
+            let level = player.level();
             let me = player.champion()?;
 
             // Nothing is named while she is dead or held. A cast she cannot
@@ -314,7 +330,7 @@ impl StablePlayerAi for AimTyLee {
             };
 
             let steps: Vec<(usize, InputKindV1, Plan)> = remaining
-                .filter(|&index| cooldowns.is_some_and(|left| ready(left, COMBO[index])))
+                .filter(|&index| cooldowns.is_some_and(|left| ready(left, level, COMBO[index])))
                 .filter_map(|index| {
                     let step = COMBO[index];
                     Some((index, step, plan_for(&sim, me, my_pos, my_radius, step, true)?))

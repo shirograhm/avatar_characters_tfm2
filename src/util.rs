@@ -6,6 +6,18 @@ use mod_api_stable::*;
 pub const MAP_SIZE: u64 = 960_000;
 pub const TICKS_PER_SECOND: f64 = 60.0;
 
+/// The level each action slot unlocks at. An engine rule rather than a
+/// champion one - nothing in `.data_champion` sets it, and the champion panel
+/// labels every kit's three skills Lv.1 / Lv.3 / Lv.5.
+///
+/// This matters because the remaining-cooldown counters do not encode it: a
+/// skill she has not learned yet reads back as zero ticks remaining, which is
+/// indistinguishable from one that is off cooldown. Any hook that names an
+/// action of its own has to check the level as well - see `ty_lee::player_ai`.
+pub const SKILL_LEVEL: usize = 1;
+pub const SKILL2_LEVEL: usize = 3;
+pub const ULT_LEVEL: usize = 5;
+
 pub fn percent_of(value: usize, percent: usize) -> usize {
     (value * percent) / 100
 }
