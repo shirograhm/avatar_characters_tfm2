@@ -37,5 +37,5 @@ This is a free fan-made mod. I am not affiliated with Nickelodeon, Paramount, or
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: avatar_wan_tfm2.dll
+Files: avatar_characters_tfm2.dll
 Runs on: Windows

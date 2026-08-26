@@ -8,12 +8,12 @@
     "Range",
     "Heal"
   ],
-  "sprite": "asset/avatar_wan_tfm2/aseprite_resources/champions/avatar_wan",
+  "sprite": "asset/avatar_characters_tfm2/aseprite_resources/champions/avatar_wan",
   "anim_prefix": "",
   "skill_icons": [
-    "asset/avatar_wan_tfm2/icons/avatar_wan_skill",
-    "asset/avatar_wan_tfm2/icons/avatar_wan_skill2",
-    "asset/avatar_wan_tfm2/icons/avatar_wan_ult"
+    "asset/avatar_characters_tfm2/icons/avatar_wan_skill",
+    "asset/avatar_characters_tfm2/icons/avatar_wan_skill2",
+    "asset/avatar_characters_tfm2/icons/avatar_wan_ult"
   ],
   "stat": {
     "attack": 62,
@@ -220,14 +220,14 @@
     {
       "type": "Animation",
       "name": "wan_avatar_cycle",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_avatar_cycle",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_avatar_cycle",
       "tag": "cycle",
       "z": 1
     },
     {
       "type": "Animation",
       "name": "wan_spirit_step_streak",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_spirit_step_streak",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_spirit_step_streak",
       "tag": "streak",
       "z": -1
     }
@@ -236,70 +236,70 @@
     {
       "type": "Animated",
       "name": "wan_fire_burn",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_fire_burn",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_fire_burn",
       "tag": "burn",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_earth_splash",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_earth_splash",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_earth_splash",
       "tag": "splash",
       "z": 0
     },
     {
       "type": "Animated",
       "name": "wan_water_splash",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_water_splash",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_water_splash",
       "tag": "splash",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_spirit_step",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_spirit_step_aura",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_spirit_step_aura",
       "tag": "aura",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_spirit_step_heal",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_spirit_step_heal",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_spirit_step_heal",
       "tag": "heal",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_harmonic_convergence",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_ult_area",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_ult_area",
       "tag": "area",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_element_air",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_attack_type_air",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_attack_type_air",
       "tag": "air",
       "z": -1
     },
     {
       "type": "Animated",
       "name": "wan_element_water",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_attack_type_water",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_attack_type_water",
       "tag": "water",
       "z": -1
     },
     {
       "type": "Animated",
       "name": "wan_element_earth",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_attack_type_earth",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_attack_type_earth",
       "tag": "earth",
       "z": -1
     },
     {
       "type": "Animated",
       "name": "wan_element_fire",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_attack_type_fire",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_attack_type_fire",
       "tag": "fire",
       "z": -1
     }
@@ -308,42 +308,42 @@
     {
       "type": "Animated",
       "name": "wan_attack_air",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_air",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_air",
       "tag": "air",
       "z": 0
     },
     {
       "type": "Animated",
       "name": "wan_attack_water",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_water",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_water",
       "tag": "water",
       "z": 0
     },
     {
       "type": "Animated",
       "name": "wan_attack_earth",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_earth",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_earth",
       "tag": "earth",
       "z": 0
     },
     {
       "type": "Animated",
       "name": "wan_attack_fire",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_fire",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_fire",
       "tag": "fire",
       "z": 0
     },
     {
       "type": "Animated",
       "name": "wan_attack_convergence",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_convergence",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_convergence",
       "tag": "convergence",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "wan_attack_convergence_comet",
-      "anim": "asset/avatar_wan_tfm2/effects/wan_projectile_convergence_comet",
+      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_convergence_comet",
       "tag": "convergence",
       "z": 1
     }

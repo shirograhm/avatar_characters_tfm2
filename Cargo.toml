@@ -1,10 +1,10 @@
 [package]
-name = "avatar_wan_tfm2"
+name = "avatar_characters_tfm2"
 version = "0.1.1"
 edition = "2021"
 
 [lib]
-# The built DLL must be named after the mod folder: avatar_wan_tfm2.dll
+# The built DLL must be named after the mod folder: avatar_characters_tfm2.dll
 crate-type = ["cdylib"]
 
 # Stable-ABI mod. Builds with any Rust toolchain and keeps loading across game

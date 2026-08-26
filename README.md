@@ -1,10 +1,8 @@
+Adds characters from the Avatar: The Last Airbender franchise to Teamfight Manager 2.
+
 # Avatar Wan
 
-Adds Avatar Wan, the first Avatar, as a draftable champion to Teamfight Manager 2.
-
-**Wan comes with his own sprite, skill icons, projectiles, and per-element effects. Some animations are still WIP.**
-
-## Wan's Kit
+## Kit
 
 **Soul of Raava** (Basic Attack)
 
@@ -14,7 +12,7 @@ Wan's basic attacks deal 50% AD physical damage and 50% AD magic damage, and app
 
 Wan swaps to the next element in-sequence.
 
-- **Fire:** Burn for 6% AD physical damage and 12 (+30% AP) magic damage over 3 seconds.
+- **Fire:** Burn for 12 (+6% AD) (+30% AP) magic damage over 3 seconds.
 - **Air:** Gain 6% movement speed for 4 seconds (max 4 stacks).
 - **Water:** Heal for 3 + 3% of your missing health.
 - **Earth:** Basic attacks deal 40% of their damage to nearby enemies.
@@ -27,9 +25,9 @@ Wan dashes a short distance in any direction. For the next 3 seconds, he stores 
 
 Wan channels Raava's full power, gaining a 300 (+60% AP) (+6% HP) health shield for 6 seconds. For the duration, Wan's basic attacks apply the effects of all 4 elements. Harmonic Convergence's duration is extended by 1.5 seconds whenever Wan gets a takedown.
 
-## Ty Lee's Kit
+# Ty Lee
 
-**Ty Lee's sprite is a starter pass built from the base game's pole_warrior - she still carries his staff, and her skill icons are Wan's placeholders.**
+## Kit
 
 **Chi Blocking** (Basic Attack)
 
@@ -47,7 +45,6 @@ Dash a short distance in any direction, shielding herself for 100 (+20% AD) (+10
 
 Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220 (+80% AD) (+100% crit chance) physical damage in a small area and silencing all champions hit for 1.5 seconds. Her next basic attack always critically strikes.
 
-
 ## Important
 
 This mod currently supports the English locale only. You can use it with other languages, but Wan's name and skill descriptions will be broken.
@@ -56,9 +53,9 @@ If you would like to provide translations, feel free to shoot me a message on Di
 
 ## Known Issues
 
-The AI does not always understand when to rotate elements, so it may sit on a suboptimal element longer than a human player would.
+The Wan AI does not always understand when to rotate elements, so it may sit on a suboptimal element longer than a human player would.  
 
-Balance numbers are still being tuned. Feedback is very welcome.
+Balance numbers are still being tuned. Feedback is very welcome.  
 
 ### Credits
 
@@ -72,6 +69,6 @@ This is a free fan-made mod. I am not affiliated with Nickelodeon, Paramount, or
 
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
 
-Files: `avatar_wan_tfm2.dll`
+Files: `avatar_characters_tfm2.dll`
 
 Runs on: Windows

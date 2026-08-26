@@ -5,12 +5,12 @@
     "AD",
     "Melee"
   ],
-  "sprite": "asset/avatar_wan_tfm2/aseprite_resources/champions/ty_lee",
+  "sprite": "asset/avatar_characters_tfm2/aseprite_resources/champions/ty_lee",
   "anim_prefix": "",
   "skill_icons": [
-    "asset/avatar_wan_tfm2/icons/ty_lee_skill",
-    "asset/avatar_wan_tfm2/icons/ty_lee_skill2",
-    "asset/avatar_wan_tfm2/icons/ty_lee_ult"
+    "asset/avatar_characters_tfm2/icons/ty_lee_skill",
+    "asset/avatar_characters_tfm2/icons/ty_lee_skill2",
+    "asset/avatar_characters_tfm2/icons/ty_lee_ult"
   ],
   "stat": {
     "attack": 78,
@@ -154,35 +154,35 @@
     {
       "type": "Animated",
       "name": "ty_lee_chi_block_1",
-      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block",
       "tag": "stack1",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "ty_lee_chi_block_2",
-      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block",
       "tag": "stack2",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "ty_lee_chi_block_3",
-      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block",
       "tag": "stack3",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "ty_lee_chi_block_break",
-      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_chi_block_break",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block_break",
       "tag": "break",
       "z": 1
     },
     {
       "type": "Animated",
       "name": "ty_lee_lightfooted",
-      "anim": "asset/avatar_wan_tfm2/effects/ty_lee_shield",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_shield",
       "tag": "shield",
       "z": 1
     }

@@ -5,12 +5,12 @@ mod match_hook;
 mod ty_lee;
 mod util;
 
-const MOD_ID: &str = "avatar_wan_tfm2";
+const MOD_ID: &str = "avatar_characters_tfm2";
 
 fn init(host: &StableHost) -> StableMod {
     host.log(
         LogLevel::Info,
-        "avatar_wan_tfm2: registering Avatar Wan and Ty Lee effects",
+        "avatar_characters_tfm2: registering Avatar Wan and Ty Lee effects",
     );
 
     let mut reg = StableMod::new(MOD_ID);
