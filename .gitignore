@@ -18,10 +18,12 @@ target/
 
 *.workshop_id
 *.dll
+*.aseprite
 *.xcf
 
 .cargo/*
 .vscode/*
+art_src/*
 tools/*
 docs/*
 previews/*

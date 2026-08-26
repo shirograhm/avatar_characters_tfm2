@@ -1,11 +1,6 @@
-use crate::element::Element;
+use super::element::Element;
+use crate::util::TICKS_PER_SECOND;
 
-// ------------------------------------------------ Defaults
-pub const MOD_ID: &str = "avatar_wan_tfm2";
-pub const CHAMPION_KEY: &str = "avatar_wan";
-
-pub const MAP_SIZE: u64 = 960_000;
-pub const TICKS_PER_SECOND: f64 = 60.0;
 macro_rules! ticks {
     ($num:expr) => {
         $num * TICKS_PER_SECOND
@@ -37,6 +32,9 @@ pub const EARTH_SPLASH_VFX_TICKS: usize = 36;
 
 pub const BURN_DAMAGE: usize = 12;
 pub const BURN_AP_RATIO: usize = 30;
+// The burn lands as two damage types. Only this half is physical - the flat
+// BURN_DAMAGE stays on the magic side with the AP scaling.
+pub const BURN_AD_RATIO: usize = 6;
 pub const BURN_TICKS: usize = 6;
 pub const BURN_TICK_INTERVAL: usize = 30;
 pub const BURN_VFX_BUFF: &str = "wan_fire_burn";
@@ -82,7 +80,3 @@ pub const AGGRO_COMMITTED_HP_FLOOR: usize = 25;
 pub const AGGRO_ULT_HP_FLOOR: usize = 12;
 pub const AGGRO_ULT_ENGAGE_RANGE: u64 = 95_000;
 pub const AGGRO_ULT_FOCUS_HP: usize = 40;
-
-pub fn percent_of(value: usize, percent: usize) -> usize {
-    (value * percent) / 100
-}

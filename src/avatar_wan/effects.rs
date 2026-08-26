@@ -1,17 +1,13 @@
 use mod_api_stable::*;
 
-use crate::constants::*;
-use crate::element::{self, Element, CYCLE};
+use super::constants::*;
+use super::element::{self, Element, CYCLE};
+use crate::util::{has_buff, percent_of, stat_of};
 
 pub const AVATAR_CYCLE: &str = "avatar_wan_avatar_cycle";
 pub const SPIRIT_STEP: &str = "avatar_wan_spirit_step";
 pub const HARMONIC_CONVERGENCE: &str = "avatar_wan_harmonic_convergence";
 pub const FIRE_BURN_TICK: &str = "avatar_wan_fire_burn_tick";
-
-fn stat_of(sim: &StableSim<'_>, entity: usize) -> StatV1 {
-    sim.get_entity(entity)
-        .map_or(StatV1::default(), |entity| entity.stat())
-}
 
 pub struct SoulOfRaava(pub Option<Element>);
 
@@ -37,7 +33,7 @@ impl StableEffectType for SoulOfRaava {
         let target = input.target_id;
 
         let stat = stat_of(sim, caster_id);
-        let converged = element::has_buff(sim, caster_id, CONVERGENCE_BUFF);
+        let converged = has_buff(sim, caster_id, CONVERGENCE_BUFF);
         let launched = self.0.unwrap_or(STARTING_ELEMENT);
 
         if element::current(sim, caster_id).is_none() {
@@ -112,15 +108,18 @@ impl StableEffectType for FireBurnTick {
             input.x as usize
         };
         let stat = stat_of(sim, caster_id);
-        let damage = element::burn_tick_damage(&stat, scale);
-        sim.deal_damage(caster_id, input.target_id, 0, damage, AttackTypeV1::Dot);
+        let (physical, magic) = element::burn_tick_damage(&stat, scale);
+        sim.deal_damage(
+            caster_id,
+            input.target_id,
+            physical,
+            magic,
+            AttackTypeV1::Dot,
+        );
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
-        (
-            0,
-            element::burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE),
-        )
+        element::burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE)
     }
 }
 
@@ -172,7 +171,7 @@ impl StableEffectType for SpiritStep {
         let stat = stat_of(sim, caster_id);
 
         sim.add_buff(caster_id, &Self::buff(&stat));
-        sim.add_buff(caster_id, &crate::match_hook::ledger_buff(0, hp));
+        sim.add_buff(caster_id, &super::tick::ledger_buff(0, hp));
     }
 
     fn expected_buff(&self, caster_stat: &StatV1) -> Option<BuffV1> {

@@ -1,7 +1,8 @@
 use mod_api_stable::*;
 
-use crate::constants::*;
-use crate::element;
+use super::constants::*;
+use super::CHAMPION_KEY;
+use crate::util::has_buff;
 
 enum Plan {
     Keep,
@@ -14,12 +15,11 @@ pub struct AggressiveWan;
 
 impl AggressiveWan {
     fn committed(sim: &StableSim<'_>, entity: usize) -> bool {
-        element::has_buff(sim, entity, STEP_BUFF)
-            || element::has_buff(sim, entity, CONVERGENCE_BUFF)
+        has_buff(sim, entity, STEP_BUFF) || has_buff(sim, entity, CONVERGENCE_BUFF)
     }
 
     fn converging(sim: &StableSim<'_>, entity: usize) -> bool {
-        element::has_buff(sim, entity, CONVERGENCE_BUFF)
+        has_buff(sim, entity, CONVERGENCE_BUFF)
     }
 
     fn effective_hp_percent(sim: &StableSim<'_>, entity: usize) -> Option<usize> {
@@ -121,18 +121,31 @@ impl StablePlayerAi for AggressiveWan {
         let player = ctx.player_id();
         let hp_percent = ctx.hp_ratio_percent()?;
 
-        let plan = {
+        let (plan, may_attack) = {
             let sim = ctx.sim()?;
-            let me = sim
-                .get_player(player)
-                .and_then(|player| player.champion())?;
+            let player = sim.get_player(player)?;
+
+            // Whether the engine will actually let him swing, from its own
+            // remaining-cooldown counters. `is_valid_input` is not that check:
+            // it does not gate cooldowns and will accept an attack he does not
+            // have, and naming an action the engine cannot start is what locks
+            // a match up - the same hazard Ty Lee's hook is built around.
+            //
+            // An attack the base AI named itself needs no counter. It only
+            // ever picks from what it already holds, so re-pointing that one is
+            // safe by construction, and it is the only attack this may name
+            // when the counters are missing entirely.
+            let may_attack = base_kind == Some(InputKindV1::Attack)
+                || player.cooldowns().is_some_and(|(attack, ..)| attack == 0);
+
+            let me = player.champion()?;
             let (my_pos, my_radius, me) = (me.pos(), me.radius() as u64, me.id());
 
             let committed = Self::committed(&sim, me);
             let converging = Self::converging(&sim, me);
             let in_combat = Self::enemy_champion_near(&sim, me, AGGRO_COMBAT_RANGE).is_some();
 
-            if base_kind == Some(InputKindV1::Skill2) {
+            let plan = if base_kind == Some(InputKindV1::Skill2) {
                 if !in_combat && hp_percent < AGGRO_LOW_HP {
                     Plan::Disengage
                 } else {
@@ -184,11 +197,16 @@ impl StablePlayerAi for AggressiveWan {
                     Some(target) if hp_percent >= floor => Plan::Attack(target),
                     _ => Plan::Keep,
                 }
-            }
+            };
+
+            (plan, may_attack)
         };
 
         match plan {
             Plan::Keep => None,
+            // No swing to give. Declining leaves the base AI's own choice
+            // standing, which is the same thing `Plan::Keep` does.
+            Plan::Attack(_) if !may_attack => None,
             Plan::Attack(target) => {
                 let input = InputV1::action(InputKindV1::Attack, InputTargetV1::target(target));
                 ctx.is_valid_input(&input).then_some(input)

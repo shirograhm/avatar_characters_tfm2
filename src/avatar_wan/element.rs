@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 
-use crate::constants::*;
+use super::constants::*;
+use crate::util::{buff_stacks, percent_of};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Element {
@@ -47,32 +48,11 @@ pub fn current_of(entity: &StableEntity<'_, '_>) -> Option<Element> {
         .find_map(|buff| Element::from_buff_name(buff.name()))
 }
 
-pub fn is_wan(entity: &StableEntity<'_, '_>) -> bool {
-    entity.is_champion()
-        && entity
-            .name()
-            .is_some_and(|name| name.trim().to_ascii_lowercase().replace(' ', "_") == CHAMPION_KEY)
-}
-
 pub fn attune(sim: &mut StableSim<'_>, entity: usize, element: Element) {
     for stale in CYCLE {
         sim.entity_remove_buff(entity, stale.buff_name());
     }
     sim.add_buff(entity, &BuffV1::named(element.buff_name()));
-}
-
-pub fn buff_stacks(sim: &StableSim<'_>, entity: usize, name: &str) -> usize {
-    let Some(entity) = sim.get_entity(entity) else {
-        return 0;
-    };
-    (0..entity.buff_count())
-        .filter_map(|index| entity.buff_at(index))
-        .filter(|buff| buff.name() == name)
-        .count()
-}
-
-pub fn has_buff(sim: &StableSim<'_>, entity: usize, name: &str) -> bool {
-    buff_stacks(sim, entity, name) > 0
 }
 
 pub fn proc(
@@ -143,7 +123,7 @@ pub fn proc(
             };
             for tick in 1..=BURN_TICKS {
                 sim.queue_effect(
-                    crate::effects::FIRE_BURN_TICK,
+                    super::effects::FIRE_BURN_TICK,
                     AttackTypeV1::Dot,
                     caster,
                     &input,
@@ -168,7 +148,10 @@ pub fn proc_damage(caster_stat: &StatV1, element: Element, scale: usize) -> (usi
     match element {
         Element::Air | Element::Water => (0, 0),
         Element::Earth => earth_splash_damage(caster_stat, scale),
-        Element::Fire => (0, burn_tick_damage(caster_stat, scale) * BURN_TICKS),
+        Element::Fire => {
+            let (physical, magic) = burn_tick_damage(caster_stat, scale);
+            (physical * BURN_TICKS, magic * BURN_TICKS)
+        }
     }
 }
 
@@ -197,9 +180,12 @@ pub fn convergence_damage(caster_stat: &StatV1) -> (usize, usize) {
 }
 
 pub fn off_element_attack_damage(caster_stat: &StatV1) -> (usize, usize) {
-    let (physical, earth_magic) = earth_splash_damage(caster_stat, CONVERGENCE_BASE_SCALE);
-    let burn = burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE) * BURN_TICKS;
-    (physical, earth_magic + burn)
+    let (earth_physical, earth_magic) = earth_splash_damage(caster_stat, CONVERGENCE_BASE_SCALE);
+    let (burn_physical, burn_magic) = burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE);
+    (
+        earth_physical + burn_physical * BURN_TICKS,
+        earth_magic + burn_magic * BURN_TICKS,
+    )
 }
 
 pub fn water_heal(missing_hp: usize, scale: usize) -> usize {
@@ -209,7 +195,16 @@ pub fn water_heal(missing_hp: usize, scale: usize) -> usize {
     )
 }
 
-pub fn burn_tick_damage(caster_stat: &StatV1, scale: usize) -> usize {
-    let total = BURN_DAMAGE + percent_of(caster_stat.magic_power, BURN_AP_RATIO);
-    percent_of(total / BURN_TICKS, scale)
+/// One tick of the burn, as `(physical, magic)`. The burn is written as a
+/// two-type dot: the physical half is pure AD scaling, the magic half is the
+/// flat burn plus AP. Each is divided down to the tick before scaling, the same
+/// order the single-type version used, so the magic half still totals what it
+/// always did.
+pub fn burn_tick_damage(caster_stat: &StatV1, scale: usize) -> (usize, usize) {
+    let physical = percent_of(caster_stat.attack, BURN_AD_RATIO);
+    let magic = BURN_DAMAGE + percent_of(caster_stat.magic_power, BURN_AP_RATIO);
+    (
+        percent_of(physical / BURN_TICKS, scale),
+        percent_of(magic / BURN_TICKS, scale),
+    )
 }

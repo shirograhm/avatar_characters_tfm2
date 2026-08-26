@@ -18,9 +18,9 @@ $modId = Split-Path -Leaf $repo
 # --- what gets deployed -----------------------------------------------------
 # Files and folders, relative to the repo. Folders are copied whole, minus the
 # extensions in $ExcludeExtensions below. Everything not named here — src,
-# target, art_src, tools, previews, README, workshop.md, preview.png, Cargo
-# files, .git, .vscode — stays out of the game folder. preview.png and
-# workshop.md are Workshop listing material, uploaded rather than deployed.
+# target, art_src, tools, previews, README, workshop.md, Cargo files, .git,
+# .vscode — stays out of the game folder. preview.png is kept with the mod
+# directory as well as the workshop listing material.
 $Include = @(
     "mod.mod_info",
     "mod.override_info",
@@ -33,14 +33,18 @@ $Include = @(
     "icons",
     "style",
     "text",
+    "ui",
     "better_mod_menu_profile.json",
     "profile_icon.png",
-    "thumbnail.png"
+    "thumbnail.png",
+    "preview.png"
 )
 
-# Editable source that the engine never reads. `.aseprite` is deliberately not
-# here: the engine can read those directly, so they ship.
-$ExcludeExtensions = @(".xcf", ".psd", ".bak", ".orig")
+# Editable source. `.aseprite` is in here even though the engine can read it
+# directly: every sheet and icon has an exported `.png` beside it, and that is
+# what ships. Keep the exports current — an `.aseprite` newer than its `.png`
+# now means the edits in it never reach the game.
+$ExcludeExtensions = @(".aseprite", ".xcf", ".psd", ".bak", ".orig")
 # ---------------------------------------------------------------------------
 
 $deploy = Join-Path (Join-Path $GameDir "mods") $modId
@@ -77,7 +81,8 @@ if (Test-Path -LiteralPath $deploy) {
     if ($PSCmdlet.ShouldProcess($deploy, "Delete contents")) {
         Remove-Item -LiteralPath (Join-Path $deploy "*") -Recurse -Force
     }
-} else {
+}
+else {
     New-Item -ItemType Directory -Path $deploy | Out-Null
 }
 
@@ -106,7 +111,8 @@ foreach ($name in $Include) {
             Copy-Item -LiteralPath $file.FullName -Destination $destination -Force
             $copied++
         }
-    } else {
+    }
+    else {
         Copy-Item -LiteralPath $source -Destination (Join-Path $deploy $name) -Force
         $copied++
     }
