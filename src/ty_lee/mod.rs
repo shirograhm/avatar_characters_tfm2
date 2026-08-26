@@ -9,6 +9,17 @@ pub mod tick;
 // ------------------------------------------------ Defaults
 pub const CHAMPION_KEY: &str = "ty_lee";
 
+// ------------------------------------------------ Action lengths
+/// How long each action occupies her, mirroring that action's `duration` in
+/// `.data_champion`. The combo sequencer in `player_ai` has no way to ask the
+/// engine whether a cast is still running, so it holds its own next step off
+/// for this long after issuing one - keep these in step with the data file or
+/// she talks over her own casts.
+pub const ATTACK_ACTION_TICKS: usize = 24;
+pub const STRIKE_ACTION_TICKS: usize = 45;
+pub const LIGHTFOOTED_ACTION_TICKS: usize = 12;
+pub const BALANCE_ACTION_TICKS: usize = 68;
+
 // ------------------------------------------------ Chi Blocking (base attack)
 pub const ATTACK_AD_RATIO: usize = 100;
 /// Mirrors `attack.range` in `.data_champion`. The AI needs to know what she
@@ -19,8 +30,8 @@ pub const CHI_BLOCK_BUFF: &str = "ty_lee_chi_block";
 /// Stacks fall off if she stops hitting the same target.
 pub const CHI_BLOCK_DURATION: usize = 6 * 60;
 pub const CHI_BLOCK_MAX_STACKS: usize = 4;
-pub const CHI_BLOCK_BONUS_MAGIC: usize = 85;
-pub const CHI_BLOCK_STUN_TICKS: u64 = 60;
+pub const CHI_BLOCK_BONUS_MAGIC: usize = 90;
+pub const CHI_BLOCK_STUN_TICKS: u64 = 45;
 /// One VFX buff per visible stack count, rendered by the `view_buffs` table in
 /// `.data_champion`. There is no entry for a full set because the hit that
 /// completes it consumes the stacks in the same breath, so the count on a unit
@@ -42,8 +53,8 @@ pub const CHI_BLOCK_BREAK_VFX_TICKS: usize = 30;
 // ------------------------------------------------ Three Point Strike
 pub const STRIKE_COUNT: usize = 3;
 pub const STRIKE_INTERVAL: usize = 15;
-pub const STRIKE_DAMAGE: usize = 40;
-pub const STRIKE_AD_RATIO: usize = 40;
+pub const STRIKE_DAMAGE: usize = 60;
+pub const STRIKE_AD_RATIO: usize = 30;
 pub const STRIKE_CRIT_BONUS: usize = 20;
 
 // ------------------------------------------------ Lightfooted
@@ -107,5 +118,3 @@ pub const BALANCE_MARK_BUFF: &str = "ty_lee_balancing_act";
 pub const BALANCE_MARK_CRIT: usize = 100;
 pub const BALANCE_MARK_CRIT_BUFF: &str = "ty_lee_balancing_act_crit";
 pub const BALANCE_MARK_DURATION: usize = 8 * 60;
-/// Chi Block stacks the marked attack applies, in place of the usual one.
-pub const BALANCE_MARK_CHI_BLOCKS: usize = 2;

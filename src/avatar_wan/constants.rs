@@ -32,6 +32,9 @@ pub const EARTH_SPLASH_VFX_TICKS: usize = 36;
 
 pub const BURN_DAMAGE: usize = 12;
 pub const BURN_AP_RATIO: usize = 30;
+// The burn lands as two damage types. Only this half is physical - the flat
+// BURN_DAMAGE stays on the magic side with the AP scaling.
+pub const BURN_AD_RATIO: usize = 6;
 pub const BURN_TICKS: usize = 6;
 pub const BURN_TICK_INTERVAL: usize = 30;
 pub const BURN_VFX_BUFF: &str = "wan_fire_burn";

@@ -92,10 +92,7 @@ impl StableEffectType for ChiBlocking {
             sim.entity_remove_buff(caster_id, BALANCE_MARK_CRIT_BUFF);
             sim.entity_remove_buff(caster_id, BALANCE_MARK_BUFF);
         }
-        let blocks = if marked { BALANCE_MARK_CHI_BLOCKS } else { 1 };
-        for _ in 0..blocks {
-            apply_chi_block(sim, caster_id, target);
-        }
+        apply_chi_block(sim, caster_id, target);
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
@@ -304,6 +301,29 @@ pub fn nearest_unit(sim: &StableSim<'_>, caster: usize, range: u64) -> Option<us
         .map(|entity| entity.id())
         .filter(|&id| id != caster && sim.distance_sq(caster, id) <= range_sq)
         // Ties resolve by entity order, which is deterministic.
+        .min_by_key(|&id| sim.distance_sq(caster, id))
+}
+
+/// The closest enemy champion, stacked or not.
+///
+/// `opening` only ever names champions already carrying Chi Block, and
+/// `nearest_unit` counts minions. The combo needs neither: it engages champions
+/// and nothing else, whether or not a stack has landed on them yet, and leaves
+/// waves to the base AI.
+pub fn nearest_enemy_champion(sim: &StableSim<'_>, caster: usize, range: u64) -> Option<usize> {
+    let team = sim.get_entity(caster)?.team();
+    let range_sq = range.saturating_mul(range);
+
+    (0..sim.champion_count())
+        .map(|index| sim.champion_id_at(index))
+        .filter(|&id| id != caster)
+        .filter(|&id| {
+            sim.get_entity(id).is_some_and(|entity| {
+                entity.is_alive() && entity.is_champion() && entity.team() != team
+            })
+        })
+        .filter(|&id| sim.distance_sq(caster, id) <= range_sq)
+        // Ties resolve by champion order, which is deterministic.
         .min_by_key(|&id| sim.distance_sq(caster, id))
 }
 

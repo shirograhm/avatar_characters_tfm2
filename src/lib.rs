@@ -41,7 +41,7 @@ fn init(host: &StableHost) -> StableMod {
     // Puts her own picks in front of the base AI's: the two dashes need a cast
     // target before the engine will move her, and her basic attack should stay
     // on an enemy one stack short of the Chi Block stun.
-    reg.add_player_input_ai(crate::ty_lee::player_ai::AimTyLee);
+    reg.add_player_input_ai(crate::ty_lee::player_ai::AimTyLee::default());
 
     reg
 }

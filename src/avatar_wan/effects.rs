@@ -108,15 +108,18 @@ impl StableEffectType for FireBurnTick {
             input.x as usize
         };
         let stat = stat_of(sim, caster_id);
-        let damage = element::burn_tick_damage(&stat, scale);
-        sim.deal_damage(caster_id, input.target_id, 0, damage, AttackTypeV1::Dot);
+        let (physical, magic) = element::burn_tick_damage(&stat, scale);
+        sim.deal_damage(
+            caster_id,
+            input.target_id,
+            physical,
+            magic,
+            AttackTypeV1::Dot,
+        );
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
-        (
-            0,
-            element::burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE),
-        )
+        element::burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE)
     }
 }
 

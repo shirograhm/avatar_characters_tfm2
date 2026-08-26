@@ -13,9 +13,9 @@
     "asset/avatar_wan_tfm2/icons/ty_lee_ult"
   ],
   "stat": {
-    "attack": 68,
+    "attack": 78,
     "magic_power": 0,
-    "hp": 880,
+    "hp": 930,
     "defence": 29,
     "magic_resistance": 19,
     "move_speed": 950,
@@ -24,9 +24,9 @@
     "crit_chance": 0
   },
   "growth": {
-    "attack": 7,
+    "attack": 9,
     "magic_power": 0,
-    "hp": 96,
+    "hp": 101,
     "defence": 9,
     "magic_resistance": 4,
     "move_speed": 2,
@@ -106,8 +106,8 @@
   "ult": {
     "action_name": "ult",
     "description": "#asset/base/text/champion?description.ty_lee.ult",
-    "duration": 54,
-    "cooltime": 2700,
+    "duration": 68,
+    "cooltime": 3300,
     "start_timing": 4,
     "cancelable": false,
     "range": 120000,
@@ -138,7 +138,7 @@
             {
               "type": "CasterAnimation",
               "name": "ult_impact",
-              "tick": 20
+              "tick": 34
             },
             {
               "type": "Native",
