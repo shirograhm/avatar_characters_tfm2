@@ -243,14 +243,11 @@ impl StableEffectType for ThreePointStrikeHit {
     }
 }
 
-/// The open window. The reduction is the engine's own basic-attack mitigation,
-/// so nothing has to be applied per hit while this is up - and it is read off
-/// her crit chance once, at cast, not tracked as it moves.
 /// The dodge. `base_attack_damaged_reduce` is the engine's own basic-attack
 /// mitigation - a mod cannot cancel an incoming hit itself - and it runs on the
-/// buff's own timer, the same three seconds the shield gets. Nothing watches
-/// the shield: with the dodge up, basic attacks cannot spend it anyway, so the
-/// two only come apart if a skill breaks it early.
+/// buff's own timer, `LIGHTFOOTED_DURATION`, the same window the shield gets.
+/// Nothing watches the shield: with the dodge up, basic attacks cannot spend it
+/// anyway, so the two only come apart if a skill breaks it early.
 pub fn lightfooted_buff() -> BuffV1 {
     let mut buff = BuffV1::timed(LIGHTFOOTED_BUFF, LIGHTFOOTED_DURATION);
     buff.base_attack_damaged_reduce = LIGHTFOOTED_DODGE;
