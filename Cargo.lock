@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "avatar_characters_tfm2"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "mod-api-stable",
 ]
