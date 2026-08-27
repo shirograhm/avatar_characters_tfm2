@@ -148,10 +148,7 @@ pub fn proc_damage(caster_stat: &StatV1, element: Element, scale: usize) -> (usi
     match element {
         Element::Air | Element::Water => (0, 0),
         Element::Earth => earth_splash_damage(caster_stat, scale),
-        Element::Fire => {
-            let (physical, magic) = burn_tick_damage(caster_stat, scale);
-            (physical * BURN_TICKS, magic * BURN_TICKS)
-        }
+        Element::Fire => (0, burn_tick_damage(caster_stat, scale) * BURN_TICKS),
     }
 }
 
@@ -181,11 +178,8 @@ pub fn convergence_damage(caster_stat: &StatV1) -> (usize, usize) {
 
 pub fn off_element_attack_damage(caster_stat: &StatV1) -> (usize, usize) {
     let (earth_physical, earth_magic) = earth_splash_damage(caster_stat, CONVERGENCE_BASE_SCALE);
-    let (burn_physical, burn_magic) = burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE);
-    (
-        earth_physical + burn_physical * BURN_TICKS,
-        earth_magic + burn_magic * BURN_TICKS,
-    )
+    let burn = burn_tick_damage(caster_stat, CONVERGENCE_BASE_SCALE);
+    (earth_physical, earth_magic + burn * BURN_TICKS)
 }
 
 pub fn water_heal(missing_hp: usize, scale: usize) -> usize {
@@ -195,16 +189,12 @@ pub fn water_heal(missing_hp: usize, scale: usize) -> usize {
     )
 }
 
-/// One tick of the burn, as `(physical, magic)`. The burn is written as a
-/// two-type dot: the physical half is pure AD scaling, the magic half is the
-/// flat burn plus AP. Each is divided down to the tick before scaling, the same
-/// order the single-type version used, so the magic half still totals what it
-/// always did.
-pub fn burn_tick_damage(caster_stat: &StatV1, scale: usize) -> (usize, usize) {
-    let physical = percent_of(caster_stat.attack, BURN_AD_RATIO);
-    let magic = BURN_DAMAGE + percent_of(caster_stat.magic_power, BURN_AP_RATIO);
-    (
-        percent_of(physical / BURN_TICKS, scale),
-        percent_of(magic / BURN_TICKS, scale),
-    )
+/// One tick of the burn, as magic damage. The burn is a single-type dot that
+/// scales off both AD and AP: the written total is the flat burn plus both
+/// ratios, divided down to the tick before scaling.
+pub fn burn_tick_damage(caster_stat: &StatV1, scale: usize) -> usize {
+    let total = BURN_DAMAGE
+        + percent_of(caster_stat.attack, BURN_AD_RATIO)
+        + percent_of(caster_stat.magic_power, BURN_AP_RATIO);
+    percent_of(total / BURN_TICKS, scale)
 }
