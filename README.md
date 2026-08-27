@@ -53,7 +53,7 @@ Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220
 
 Toph's basic attacks deal 100% AD as physical damage and mark enemy champions for 3 seconds. Damaging a marked enemy consumes the mark to deal 80 (+8% AP) bonus magic damage.
 
-**Rock Column** (Skill 1)
+**Rock Pillar** (Skill 1)
 
 Toph bends a pillar of earth beneath a target enemy, dealing 50 (+75% AP) magic damage and popping them into the air for 1.25 seconds.
 

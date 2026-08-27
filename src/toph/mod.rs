@@ -40,15 +40,15 @@ pub const MARK_BONUS_AP_RATIO: usize = 8;
 pub const MARK_POP_VFX_BUFF: &str = "toph_seismic_mark_pop";
 pub const MARK_POP_VFX_TICKS: usize = 24;
 
-// ------------------------------------------------ Rock Column
+// ------------------------------------------------ Rock Pillar
 /// Mirrors `skill.range` in `.data_champion`. She bends the pillar up under
 /// someone rather than reaching them, so it outranges her fist by a good way.
-pub const COLUMN_RANGE: u64 = 45_000;
-pub const COLUMN_DAMAGE: usize = 50;
-pub const COLUMN_AP_RATIO: usize = 75;
+pub const PILLAR_RANGE: u64 = 45_000;
+pub const PILLAR_DAMAGE: usize = 50;
+pub const PILLAR_AP_RATIO: usize = 75;
 /// 1.25 seconds of airborne. Towers are excluded from the lift - there is
 /// nothing to pop - but they still take the hit.
-pub const COLUMN_AIRBORNE_TICKS: u64 = 75;
+pub const PILLAR_AIRBORNE_TICKS: u64 = 75;
 
 // ------------------------------------------------ The First Metalbender
 /// The armor she is wearing, and the window before it blows.

@@ -36,7 +36,7 @@ fn init(host: &StableHost) -> StableMod {
 
     use toph::effects as toph;
     reg.add_native_effect(toph::SEISMIC_SENSE, toph::SeismicSense);
-    reg.add_native_effect(toph::ROCK_COLUMN, toph::RockColumn);
+    reg.add_native_effect(toph::ROCK_PILLAR, toph::RockPillar);
     reg.add_native_effect(toph::FIRST_METALBENDER, toph::FirstMetalbender);
     reg.add_native_effect(toph::BLIND_BANDIT, toph::BlindBandit);
     reg.add_native_effect(toph::BLIND_BANDIT_WAVE, toph::BlindBanditWave);

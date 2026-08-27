@@ -1,6 +1,6 @@
 {
     "anims": {
-        "column": {
+        "pillar": {
             "frames": [
                 {
                     "duration": 0.08,

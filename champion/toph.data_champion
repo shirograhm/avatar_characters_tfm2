@@ -69,11 +69,11 @@
       "effects": [
         {
           "type": "ViewEffect",
-          "name": "toph_rock_column_pillar"
+          "name": "toph_rock_pillar"
         },
         {
           "type": "Native",
-          "effect_ref": "toph_rock_column"
+          "effect_ref": "toph_rock_pillar"
         }
       ]
     }
@@ -115,9 +115,9 @@
   "view_effects": [
     {
       "type": "Animation",
-      "name": "toph_rock_column_pillar",
-      "anim": "asset/avatar_characters_tfm2/effects/toph/rock_column",
-      "tag": "column",
+      "name": "toph_rock_pillar",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/rock_pillar",
+      "tag": "pillar",
       "z": -1
     }
   ],

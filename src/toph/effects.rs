@@ -4,7 +4,7 @@ use super::*;
 use crate::util::{enemies_near, has_buff, percent_of, permille_of, stat_of};
 
 pub const SEISMIC_SENSE: &str = "toph_seismic_sense";
-pub const ROCK_COLUMN: &str = "toph_rock_column";
+pub const ROCK_PILLAR: &str = "toph_rock_pillar";
 pub const FIRST_METALBENDER: &str = "toph_first_metalbender";
 pub const BLIND_BANDIT: &str = "toph_blind_bandit";
 pub const BLIND_BANDIT_WAVE: &str = "toph_blind_bandit_wave";
@@ -120,13 +120,13 @@ impl StableEffectType for SeismicSense {
     }
 }
 
-pub fn column_damage(caster_stat: &StatV1) -> usize {
-    COLUMN_DAMAGE + percent_of(caster_stat.magic_power, COLUMN_AP_RATIO)
+pub fn pillar_damage(caster_stat: &StatV1) -> usize {
+    PILLAR_DAMAGE + percent_of(caster_stat.magic_power, PILLAR_AP_RATIO)
 }
 
-pub struct RockColumn;
+pub struct RockPillar;
 
-impl StableEffectType for RockColumn {
+impl StableEffectType for RockPillar {
     fn apply(
         &self,
         sim: &mut StableSim<'_>,
@@ -138,7 +138,7 @@ impl StableEffectType for RockColumn {
             return;
         }
         let target = input.target_id;
-        let damage = column_damage(&stat_of(sim, caster_id));
+        let damage = pillar_damage(&stat_of(sim, caster_id));
 
         // Read before the hit: a tower is still owed the damage, it just has
         // nothing to pop into the air, and it may not survive to be asked.
@@ -151,17 +151,17 @@ impl StableEffectType for RockColumn {
         if liftable && still_standing(sim, target) {
             sim.apply_cc(
                 target,
-                &CcV1::of_kind(CcKindV1::Airborne, COLUMN_AIRBORNE_TICKS),
+                &CcV1::of_kind(CcKindV1::Airborne, PILLAR_AIRBORNE_TICKS),
             );
         }
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
-        (0, column_damage(caster_stat))
+        (0, pillar_damage(caster_stat))
     }
 
     fn expected_cc_time(&self) -> Option<usize> {
-        Some(COLUMN_AIRBORNE_TICKS as usize)
+        Some(PILLAR_AIRBORNE_TICKS as usize)
     }
 }
 

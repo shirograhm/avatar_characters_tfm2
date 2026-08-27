@@ -15,7 +15,7 @@
       },
       "toph": {
         "attack": "Seismic Sense",
-        "skill1": "Rock Column",
+        "skill1": "Rock Pillar",
         "skill2": "The First Metalbender",
         "ult": "Blind Bandit"
       }
@@ -38,7 +38,7 @@
       "toph": {
         "name": "Toph",
         "attack": "Toph's basic attacks deal <#ff9028ff>100% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD physical damage<> and <#e8a800ff>mark<> enemy champions for <#e8a800ff>3 seconds<>. Damaging a marked enemy <#e8a800ff>consumes the mark<> to deal <#a974ffff>80 (+8% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) bonus magic damage<>.",
-        "skill": "Toph bends a pillar of earth beneath a target enemy, dealing <#a974ffff>50 (+75% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) magic damage<> and <#d94c49ff>popping them into the air<> for <#e8a800ff>1.25 seconds<>.",
+        "skill": "Toph bends a pillar of earth beneath a target enemy, dealing <#a974ffff>50 (+75% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) magic damage<> and <#d94c49ff>knocking them up<> for <#e8a800ff>1.25 seconds<>.",
         "skill2": "Toph bends herself a suit of armor, gaining <#cab944ff>60 <#60e84dff>(+3% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#cab944ff>30 <#60e84dff>(+1.5% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> magic resistance<>. After <#e8a800ff>6 seconds<> or on <#e8a800ff>recast<>, the armor explodes outward, dealing <#a974ffff>100 (+60% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) magic damage<> to all nearby enemies (<#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>).",
         "ult": "Toph slams the ground, releasing <#e8a800ff>3/4/5<> shockwaves around her, each dealing <#a974ffff>200 (+45% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>(+5% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> <#a974ffff>magic damage<>. The final shockwave <#d94c49ff>slows<> enemies hit by <#e8a800ff>20%<> for <#e8a800ff>2 seconds<> and applies <#e8a800ff>Seismic Sense<>'s <#e8a800ff>mark<>."
       }

@@ -166,7 +166,7 @@ impl StablePlayerAi for AimToph {
                 // more interesting to her than any other.
                 InputKindV1::Attack => best_mark(&sim, me, ATTACK_RANGE)
                     .map_or(Pick::Keep, |target| Pick::At(kind, target)),
-                InputKindV1::Skill => best_mark(&sim, me, COLUMN_RANGE)
+                InputKindV1::Skill => best_mark(&sim, me, PILLAR_RANGE)
                     .map_or(Pick::Keep, |target| Pick::At(kind, target)),
                 // A slam that catches no champion is sixty seconds of cooldown
                 // spent on empty ground. Her fist is the substitute, and only
