@@ -22,6 +22,13 @@ pub fn percent_of(value: usize, percent: usize) -> usize {
     (value * percent) / 100
 }
 
+/// The same thing in tenths of a percent, for the ratios that are not whole
+/// ones - 1.5% of health is `permille_of(hp, 15)`. Everything here is integer
+/// maths, so a fractional percentage has nowhere else to go.
+pub fn permille_of(value: usize, permille: usize) -> usize {
+    (value * permille) / 1000
+}
+
 pub fn stat_of(sim: &StableSim<'_>, entity: usize) -> StatV1 {
     sim.get_entity(entity)
         .map_or(StatV1::default(), |entity| entity.stat())
@@ -119,6 +126,30 @@ pub fn enemies_near(
         .map(|entity| entity.id())
         .filter(|&id| id != center_id && sim.distance_sq(center_id, id) <= radius_sq)
         .collect()
+}
+
+/// The closest living enemy champion inside `range`, or `None` when there is
+/// none. Towers and minions are never candidates - every caller so far wants
+/// the champion fight rather than the wave.
+///
+/// Lives here rather than in one champion's module because both Ty Lee and
+/// Toph aim off it: she reaches for the nearest champion when nothing better
+/// presents itself, and he - well, she - opens on one.
+pub fn nearest_enemy_champion(sim: &StableSim<'_>, caster: usize, range: u64) -> Option<usize> {
+    let team = sim.get_entity(caster)?.team();
+    let range_sq = range.saturating_mul(range);
+
+    (0..sim.champion_count())
+        .map(|index| sim.champion_id_at(index))
+        .filter(|&id| id != caster)
+        .filter(|&id| {
+            sim.get_entity(id).is_some_and(|entity| {
+                entity.is_alive() && entity.is_champion() && entity.team() != team
+            })
+        })
+        .filter(|&id| sim.distance_sq(caster, id) <= range_sq)
+        // Ties resolve by champion order, which is deterministic.
+        .min_by_key(|&id| sim.distance_sq(caster, id))
 }
 
 /// Deterministic 0..99 roll derived from the seed the engine hands an effect.

@@ -85,6 +85,13 @@ impl StableEffectType for ChiBlockStun {
             .is_some_and(|target| target.is_alive())
         {
             sim.apply_cc(target, &CcV1::stun(CHI_BLOCK_STUN_TICKS));
+            // The stars go on beside the hold rather than being left to the
+            // engine, which does not draw its own over a mod's crowd control -
+            // see `CHI_BLOCK_STUN_VFX_BUFF`.
+            sim.add_buff(
+                target,
+                &BuffV1::timed(CHI_BLOCK_STUN_VFX_BUFF, CHI_BLOCK_STUN_TICKS as usize),
+            );
         }
     }
 
@@ -344,28 +351,14 @@ pub fn nearest_unit(sim: &StableSim<'_>, caster: usize, range: u64) -> Option<us
         .min_by_key(|&id| sim.distance_sq(caster, id))
 }
 
-/// The closest enemy champion, stacked or not.
+/// The closest enemy champion, stacked or not - `util::nearest_enemy_champion`
+/// under the name her own module uses for it.
 ///
 /// `opening` only ever names champions already carrying Chi Block, and
 /// `nearest_unit` counts minions. The combo needs neither: it engages champions
 /// and nothing else, whether or not a stack has landed on them yet, and leaves
 /// waves to the base AI.
-pub fn nearest_enemy_champion(sim: &StableSim<'_>, caster: usize, range: u64) -> Option<usize> {
-    let team = sim.get_entity(caster)?.team();
-    let range_sq = range.saturating_mul(range);
-
-    (0..sim.champion_count())
-        .map(|index| sim.champion_id_at(index))
-        .filter(|&id| id != caster)
-        .filter(|&id| {
-            sim.get_entity(id).is_some_and(|entity| {
-                entity.is_alive() && entity.is_champion() && entity.team() != team
-            })
-        })
-        .filter(|&id| sim.distance_sq(caster, id) <= range_sq)
-        // Ties resolve by champion order, which is deterministic.
-        .min_by_key(|&id| sim.distance_sq(caster, id))
-}
+pub use crate::util::nearest_enemy_champion;
 
 fn balance_damage(caster_stat: &StatV1) -> usize {
     BALANCE_DAMAGE

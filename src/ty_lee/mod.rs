@@ -53,6 +53,29 @@ pub const CHI_BLOCK_VFX_BUFFS: [&str; CHI_BLOCK_MAX_STACKS - 1] = [
 pub const CHI_BLOCK_BREAK_VFX_BUFF: &str = "ty_lee_chi_block_break";
 pub const CHI_BLOCK_BREAK_VFX_TICKS: usize = 30;
 
+/// The spinning stars over a stunned target.
+///
+/// The engine has these already - `game-view/src/view/entity.rs` draws
+/// `skill_effect/stun_effect` over stunned entities, which is where every base
+/// champion's stun spin comes from, since not one of them ships a stun
+/// animation or a stun view buff of its own. That overlay does not appear for
+/// a hold a mod applied through `apply_cc`, so the Chi Block finisher used to
+/// stun people in silence. `tools/gen_ty_lee_stun.py` copies the base art into
+/// `effects/` and this puts it back on the target by hand.
+///
+/// It runs for `CHI_BLOCK_STUN_TICKS` because it *is* the stun - the sheet is
+/// cut to that length rather than looped, since `Animated` view buffs hold
+/// their last frame rather than starting over. Change the hold and regenerate
+/// the sheet, or the stars stop matching it.
+pub const CHI_BLOCK_STUN_VFX_BUFF: &str = "ty_lee_chi_block_stun";
+
+/// The overlays that play once and stop, as opposed to the stack marks, which
+/// are reconciled against a count. Buffs outlive the unit wearing them, so
+/// these are what `tick` has to take off a corpse before they draw over its
+/// death animation.
+pub const CHI_BLOCK_ONESHOT_VFX_BUFFS: [&str; 2] =
+    [CHI_BLOCK_BREAK_VFX_BUFF, CHI_BLOCK_STUN_VFX_BUFF];
+
 // ------------------------------------------------ Three Point Strike
 pub const STRIKE_COUNT: usize = 3;
 pub const STRIKE_INTERVAL: usize = 15;

@@ -34,6 +34,21 @@ Dash a short distance in any direction, shielding herself for 100 (+20% AD) (+10
 [b]Balancing Act[/b] (Ultimate)
 Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220 (+80% AD) (+100% crit chance) physical damage in a small area and silencing all champions hit for 1.5 seconds. Her next basic attack always critically strikes.
 
+[h1] Toph [/h1]
+
+[h2] Kit [/h2]
+[b]Seismic Sense[/b] (Basic Attack)
+Toph's basic attacks deal 100% AD as physical damage and mark enemy champions for 3 seconds. Damaging a marked enemy consumes the mark to deal 80 (+8% AP) bonus magic damage.
+
+[b]Rock Column[/b] (Skill 1)
+Toph bends a pillar of earth beneath a target enemy, dealing 50 (+75% AP) magic damage and popping them into the air for 1.25 seconds.
+
+[b]The First Metalbender[/b] (Skill 2)
+Toph bends herself a suit of armor, gaining 60 (+3% HP) armor and 30 (+1.5% HP) magic resistance. After 6 seconds or on recast, the armor explodes outward, dealing 100 (+60% AP) magic damage to all nearby enemies (35 range).
+
+[b]Blind Bandit[/b] (Ultimate)
+Toph slams the ground, releasing 3/4/5 (levels 1-4/5-8/9-12) shockwaves around her, each dealing 200 (+45% AP) (+5% HP) magic damage. The final shockwave slows enemies hit by 20% for 2 seconds and applies Seismic Sense's mark.
+
 [h1] Important [/h1]
 This mod currently supports the English locale only. You can use it with other languages, but the characters' names and skill descriptions will be broken.
 
@@ -41,6 +56,8 @@ If you would like to provide translations, feel free to shoot me a message on Di
 
 [h1] Known Issues [/h1]
 The Wan AI does not always understand when to rotate elements, so it may sit on a suboptimal element longer than a human player would.
+
+Toph's skill icons and champion sprite are placeholders - the sprite is a recolour of the base game's monk and has no hair, and the four icons are generated glyphs rather than show art.
 
 Balance numbers are still being tuned. Feedback is very welcome.
 

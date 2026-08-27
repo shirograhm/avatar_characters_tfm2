@@ -1,0 +1,169 @@
+{
+  "id": "toph",
+  "category": "Melee",
+  "tags": [
+    "AP",
+    "Magic",
+    "Melee",
+    "Tank",
+    "CC"
+  ],
+  "sprite": "asset/avatar_characters_tfm2/aseprite_resources/champions/toph",
+  "anim_prefix": "",
+  "skill_icons": [
+    "asset/avatar_characters_tfm2/icons/toph/skill",
+    "asset/avatar_characters_tfm2/icons/toph/skill2",
+    "asset/avatar_characters_tfm2/icons/toph/ult"
+  ],
+  "stat": {
+    "attack": 68,
+    "magic_power": 10,
+    "hp": 1010,
+    "defence": 32,
+    "magic_resistance": 22,
+    "move_speed": 950,
+    "hp_regen": 0,
+    "stack": 0,
+    "crit_chance": 0
+  },
+  "growth": {
+    "attack": 6,
+    "magic_power": 11,
+    "hp": 112,
+    "defence": 9,
+    "magic_resistance": 4,
+    "move_speed": 3,
+    "hp_regen": 0,
+    "stack": 0,
+    "crit_chance": 0
+  },
+  "attack": {
+    "action_name": "attack",
+    "description": "#asset/base/text/champion?description.toph.attack",
+    "duration": 24,
+    "cooltime": 60,
+    "start_timing": 8,
+    "cancelable": false,
+    "range": 17000,
+    "casting_type": "Targeting",
+    "casting_target": "Enemy",
+    "attack_type": "BaseAttack",
+    "effect": {
+      "type": "Native",
+      "effect_ref": "toph_seismic_sense"
+    }
+  },
+  "skill": {
+    "action_name": "skill1",
+    "description": "#asset/base/text/champion?description.toph.skill",
+    "duration": 36,
+    "cooltime": 480,
+    "start_timing": 12,
+    "cancelable": false,
+    "range": 45000,
+    "casting_type": "Targeting",
+    "casting_target": "Enemy",
+    "attack_type": "Skill",
+    "effect": {
+      "type": "Combine",
+      "effects": [
+        {
+          "type": "ViewEffect",
+          "name": "toph_rock_column_pillar"
+        },
+        {
+          "type": "Native",
+          "effect_ref": "toph_rock_column"
+        }
+      ]
+    }
+  },
+  "skill2": {
+    "action_name": "skill2",
+    "description": "#asset/base/text/champion?description.toph.skill2",
+    "duration": 18,
+    "cooltime": 720,
+    "cooltime_use_count": 2,
+    "start_timing": 1,
+    "cancelable": false,
+    "range": 0,
+    "casting_type": "None",
+    "casting_target": "AllyOnlySelf",
+    "attack_type": "Skill",
+    "can_use_with_move": true,
+    "effect": {
+      "type": "Native",
+      "effect_ref": "toph_first_metalbender"
+    }
+  },
+  "ult": {
+    "action_name": "ult",
+    "description": "#asset/base/text/champion?description.toph.ult",
+    "duration": 48,
+    "cooltime": 3600,
+    "start_timing": 4,
+    "cancelable": false,
+    "range": 0,
+    "casting_type": "None",
+    "casting_target": "AllyOnlySelf",
+    "attack_type": "Skill",
+    "effect": {
+      "type": "Native",
+      "effect_ref": "toph_blind_bandit"
+    }
+  },
+  "view_effects": [
+    {
+      "type": "Animation",
+      "name": "toph_rock_column_pillar",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/rock_column",
+      "tag": "column",
+      "z": -1
+    }
+  ],
+  "view_buffs": [
+    {
+      "type": "Animated",
+      "name": "toph_seismic_mark",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/seismic_mark",
+      "tag": "mark",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "toph_seismic_mark_pop",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/seismic_mark_pop",
+      "tag": "pop",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "toph_metal_armor",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/metal_armor",
+      "tag": "armor",
+      "z": -1
+    },
+    {
+      "type": "Animated",
+      "name": "toph_metal_burst",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/metal_burst",
+      "tag": "burst",
+      "z": 1
+    },
+    {
+      "type": "Animated",
+      "name": "toph_shockwave",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/shockwave",
+      "tag": "wave",
+      "z": -1
+    },
+    {
+      "type": "Animated",
+      "name": "toph_blind_bandit_slow",
+      "anim": "asset/avatar_characters_tfm2/effects/toph/slow",
+      "tag": "slow",
+      "z": -1
+    }
+  ],
+  "view_projectiles": []
+}

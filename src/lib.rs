@@ -2,6 +2,7 @@ use mod_api_stable::*;
 
 mod avatar_wan;
 mod match_hook;
+mod toph;
 mod ty_lee;
 mod util;
 
@@ -10,7 +11,7 @@ const MOD_ID: &str = "avatar_characters_tfm2";
 fn init(host: &StableHost) -> StableMod {
     host.log(
         LogLevel::Info,
-        "avatar_characters_tfm2: registering Avatar Wan and Ty Lee effects",
+        "avatar_characters_tfm2: registering Avatar Wan, Ty Lee and Toph effects",
     );
 
     let mut reg = StableMod::new(MOD_ID);
@@ -33,6 +34,13 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_native_effect(ty_lee::BALANCING_ACT, ty_lee::BalancingAct);
     reg.add_native_effect(ty_lee::BALANCING_ACT_LAND, ty_lee::BalancingActLand);
 
+    use toph::effects as toph;
+    reg.add_native_effect(toph::SEISMIC_SENSE, toph::SeismicSense);
+    reg.add_native_effect(toph::ROCK_COLUMN, toph::RockColumn);
+    reg.add_native_effect(toph::FIRST_METALBENDER, toph::FirstMetalbender);
+    reg.add_native_effect(toph::BLIND_BANDIT, toph::BlindBandit);
+    reg.add_native_effect(toph::BLIND_BANDIT_WAVE, toph::BlindBanditWave);
+
     reg.set_match_hook(match_hook::ModTick);
 
     // Keeps him in fights his kit is built to win. `matches` limits it to
@@ -43,6 +51,10 @@ fn init(host: &StableHost) -> StableMod {
     // target before the engine will move her, and her basic attack should stay
     // on an enemy one stack short of the Chi Block stun.
     reg.add_player_input_ai(crate::ty_lee::player_ai::AimTyLee::default());
+
+    // Keeps her mark worth having and stops the slam going off on empty
+    // ground. `matches` limits it to Toph's own athletes.
+    reg.add_player_input_ai(crate::toph::player_ai::AimToph::default());
 
     reg
 }

@@ -20,10 +20,11 @@ fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
 }
 
 /// What Chi Block should be drawing on this unit: the overlay for its stack
-/// count, and whether the break burst is still allowed to be on it.
+/// count, and whether its one-shot overlays - the break burst and the stun
+/// stars - are still allowed to be on it.
 ///
-/// A corpse shows neither. Buffs outlive the unit here, so anything left on one
-/// keeps drawing over its death animation.
+/// A corpse shows none of them. Buffs outlive the unit here, so anything left
+/// on one keeps drawing over its death animation.
 ///
 /// Zero health counts as dead on its own: the hit that finishes a set is
 /// usually the one that kills, and `is_alive` can still read true while the
@@ -40,26 +41,35 @@ fn chi_block_vfx(entity: &StableEntity<'_, '_>) -> (Option<&'static str>, bool) 
 }
 
 fn recount_chi_block(sim: &mut StableSim<'_>) {
-    let miscounted: Vec<(usize, Option<&'static str>, bool)> = (0..sim.entity_count())
+    let miscounted: Vec<(usize, Option<&'static str>, Vec<&'static str>)> = (0
+        ..sim.entity_count())
         .filter_map(|index| sim.entity_at(index))
         .filter_map(|entity| {
-            let (wanted, burst_allowed) = chi_block_vfx(&entity);
+            let (wanted, oneshots_allowed) = chi_block_vfx(&entity);
             let shown = CHI_BLOCK_VFX_BUFFS
                 .iter()
                 .copied()
                 .find(|name| has_buff(&entity, name));
-            let drop_burst = !burst_allowed && has_buff(&entity, CHI_BLOCK_BREAK_VFX_BUFF);
+            let stale: Vec<&'static str> = if oneshots_allowed {
+                Vec::new()
+            } else {
+                CHI_BLOCK_ONESHOT_VFX_BUFFS
+                    .into_iter()
+                    .filter(|name| has_buff(&entity, name))
+                    .collect()
+            };
 
-            (wanted != shown || drop_burst).then_some((entity.id(), wanted, drop_burst))
+            (wanted != shown || !stale.is_empty())
+                .then_some((entity.id(), wanted, stale))
         })
         .collect();
 
-    for (entity, wanted, drop_burst) in miscounted {
+    for (entity, wanted, stale) in miscounted {
         for name in CHI_BLOCK_VFX_BUFFS {
             sim.entity_remove_buff(entity, name);
         }
-        if drop_burst {
-            sim.entity_remove_buff(entity, CHI_BLOCK_BREAK_VFX_BUFF);
+        for name in stale {
+            sim.entity_remove_buff(entity, name);
         }
         if let Some(name) = wanted {
             sim.add_buff(entity, &BuffV1::named(name));

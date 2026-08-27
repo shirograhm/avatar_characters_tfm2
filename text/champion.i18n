@@ -12,6 +12,12 @@
         "skill1": "Three Point Strike",
         "skill2": "Lightfooted",
         "ult": "Balancing Act"
+      },
+      "toph": {
+        "attack": "Seismic Sense",
+        "skill1": "Rock Column",
+        "skill2": "The First Metalbender",
+        "ult": "Blind Bandit"
       }
     },
     "description": {
@@ -28,6 +34,13 @@
         "skill": "Ty Lee strikes the target <#e8a800ff>3 times<> in quick succession, each dealing <#ff9028ff>60 (+30% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD) physical damage<> and applying <#e8a800ff>Chi Block<>. Each hit can <#d45656ff><i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critically strike<> for <#e8a800ff>20% bonus damage<>.",
         "skill2": "Ty Lee <#ceff99ff>dashes<> a short distance in any direction, <#cab944ff>shielding herself<> for <#cab944ff>100 <#ff9028ff>(+20% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#60e84dff>(+10% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> health<> for <#e8a800ff>4 seconds<>. For the duration, she also <#ceff99ff>dodges<> all basic attacks.",
         "ult": "Ty Lee <#ceff99ff>dashes<> to the <#60e84dff>highest health<> enemy champion within <#ff86c2ff>120 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, dealing <#ff9028ff>220 (+80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> physical damage<> in a small area and <#d94c49ff>silencing<> all champions hit for <#e8a800ff>1.5 seconds<>. Her next basic attack always <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<>."
+      },
+      "toph": {
+        "name": "Toph",
+        "attack": "Toph's basic attacks deal <#ff9028ff>100% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD physical damage<> and <#e8a800ff>mark<> enemy champions for <#e8a800ff>3 seconds<>. Damaging a marked enemy <#e8a800ff>consumes the mark<> to deal <#a974ffff>80 (+8% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) bonus magic damage<>.",
+        "skill": "Toph bends a pillar of earth beneath a target enemy, dealing <#a974ffff>50 (+75% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) magic damage<> and <#d94c49ff>popping them into the air<> for <#e8a800ff>1.25 seconds<>.",
+        "skill2": "Toph bends herself a suit of armor, gaining <#cab944ff>60 <#60e84dff>(+3% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#cab944ff>30 <#60e84dff>(+1.5% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> magic resistance<>. After <#e8a800ff>6 seconds<> or on <#e8a800ff>recast<>, the armor explodes outward, dealing <#a974ffff>100 (+60% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP) magic damage<> to all nearby enemies (<#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>).",
+        "ult": "Toph slams the ground, releasing <#e8a800ff>3/4/5<> shockwaves around her, each dealing <#a974ffff>200 (+45% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>(+5% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> HP)<> <#a974ffff>magic damage<>. The final shockwave <#d94c49ff>slows<> enemies hit by <#e8a800ff>20%<> for <#e8a800ff>2 seconds<> and applies <#e8a800ff>Seismic Sense<>'s <#e8a800ff>mark<>."
       }
     }
   }

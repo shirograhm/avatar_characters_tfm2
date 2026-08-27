@@ -8,5 +8,6 @@ impl StableMatchHook for ModTick {
     fn on_match_tick(&self, sim: &mut StableSim<'_>, _rng_seed: u64) {
         crate::avatar_wan::tick::on_match_tick(sim);
         crate::ty_lee::tick::on_match_tick(sim);
+        crate::toph::tick::on_match_tick(sim);
     }
 }
