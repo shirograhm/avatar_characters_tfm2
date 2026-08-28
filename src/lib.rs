@@ -5,6 +5,7 @@ mod match_hook;
 mod toph;
 mod ty_lee;
 mod util;
+mod vfx;
 
 const MOD_ID: &str = "avatar_characters_tfm2";
 
@@ -34,14 +35,21 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_native_effect(ty_lee::BALANCING_ACT, ty_lee::BalancingAct);
     reg.add_native_effect(ty_lee::BALANCING_ACT_LAND, ty_lee::BalancingActLand);
 
-    use toph::effects as toph;
-    reg.add_native_effect(toph::SEISMIC_SENSE, toph::SeismicSense);
-    reg.add_native_effect(toph::ROCK_PILLAR, toph::RockPillar);
-    reg.add_native_effect(toph::FIRST_METALBENDER, toph::FirstMetalbender);
-    reg.add_native_effect(toph::BLIND_BANDIT, toph::BlindBandit);
-    reg.add_native_effect(toph::BLIND_BANDIT_WAVE, toph::BlindBanditWave);
+    // Toph is defined in Rust rather than in a `.data_champion`, so her four
+    // actions hold their effects directly and only the queued one still needs
+    // a name: `BlindBandit` schedules its follow-up waves through
+    // `sim.queue_effect`, which takes a registered id and nothing else.
+    reg.add_champion(toph::champion::Toph);
+    reg.add_native_effect(
+        toph::effects::BLIND_BANDIT_WAVE,
+        toph::effects::BlindBanditWave,
+    );
 
     reg.set_match_hook(match_hook::ModTick);
+
+    // Draws what her `view_buffs` block used to. Nothing else in the mod needs
+    // the client, so the whole extension is hers.
+    reg.set_extension(vfx::Extension);
 
     // Keeps him in fights his kit is built to win. `matches` limits it to
     // Wan's own athletes, so no other champion's AI is touched.
@@ -52,9 +60,10 @@ fn init(host: &StableHost) -> StableMod {
     // on an enemy one stack short of the Chi Block stun.
     reg.add_player_input_ai(crate::ty_lee::player_ai::AimTyLee::default());
 
-    // Keeps her mark worth having and stops the slam going off on empty
-    // ground. `matches` limits it to Toph's own athletes.
-    reg.add_player_input_ai(crate::toph::player_ai::AimToph::default());
+    // Toph's own hook is off while the freeze during progression is being
+    // chased - see `toph::player_ai`. Her kit is unaffected: the hook only
+    // ever re-aimed casts the base AI had already decided to make, so without
+    // it she plays as the base AI drives her.
 
     reg
 }

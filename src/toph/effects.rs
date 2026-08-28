@@ -3,10 +3,10 @@ use mod_api_stable::*;
 use super::*;
 use crate::util::{enemies_near, has_buff, percent_of, permille_of, stat_of};
 
-pub const SEISMIC_SENSE: &str = "toph_seismic_sense";
-pub const ROCK_PILLAR: &str = "toph_rock_pillar";
-pub const FIRST_METALBENDER: &str = "toph_first_metalbender";
-pub const BLIND_BANDIT: &str = "toph_blind_bandit";
+/// The one effect of hers that still needs a name. Her four actions hold
+/// their effects directly now that `champion.rs` builds them, but a queued
+/// effect is looked up by id when it comes due, so the follow-up shockwaves
+/// have to stay registered - see `BlindBandit::apply`.
 pub const BLIND_BANDIT_WAVE: &str = "toph_blind_bandit_wave";
 
 fn is_champion_id(sim: &StableSim<'_>, entity: usize) -> bool {
@@ -139,6 +139,12 @@ impl StableEffectType for RockPillar {
         }
         let target = input.target_id;
         let damage = pillar_damage(&stat_of(sim, caster_id));
+
+        // The pillar comes up before the damage lands, which is the order the
+        // data file's `Combine` played them in. It is a buff rather than a
+        // detached animation because a Rust champion has no `view_effects` -
+        // see `super::vfx`.
+        sim.add_buff(target, &BuffV1::timed(PILLAR_VFX_BUFF, PILLAR_VFX_TICKS));
 
         // Read before the hit: a tower is still owed the damage, it just has
         // nothing to pop into the air, and it may not survive to be asked.
@@ -390,8 +396,11 @@ impl StableEffectType for BlindBanditWave {
 }
 
 /// Every enemy champion inside `range` already carrying a mark, closest first.
+///
+/// Read only by `player_ai`, which is currently unregistered.
 /// This is the whole set of openings the AI steers by: a marked champion is
 /// worth the better part of a hundred extra magic damage to reach.
+#[allow(dead_code)]
 pub fn marked_enemies(sim: &StableSim<'_>, caster: usize, range: u64) -> Vec<(u64, usize)> {
     let Some(team) = sim.get_entity(caster).map(|me| me.team()) else {
         return Vec::new();
@@ -413,6 +422,7 @@ pub fn marked_enemies(sim: &StableSim<'_>, caster: usize, range: u64) -> Vec<(u6
 /// How many enemy champions a slam cast right now would catch. Minions are not
 /// counted on purpose: the ult is worth sixty seconds against champions and
 /// wasted on a wave, so a wave should read the same as an empty field.
+#[allow(dead_code)]
 pub fn slam_champions(sim: &StableSim<'_>, caster: usize) -> usize {
     enemies_near(sim, caster, caster, BANDIT_RADIUS)
         .into_iter()
