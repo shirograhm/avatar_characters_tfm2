@@ -3,10 +3,14 @@ use mod_api_stable::*;
 use super::*;
 use crate::util::{enemies_near, has_buff, percent_of, permille_of, stat_of};
 
-/// The one effect of hers that still needs a name. Her four actions hold
-/// their effects directly now that `champion.rs` builds them, but a queued
-/// effect is looked up by id when it comes due, so the follow-up shockwaves
-/// have to stay registered - see `BlindBandit::apply`.
+/// The names `.data_champion` reaches her kit by. Her four actions each name
+/// one of the first four, and the fifth is the follow-up shockwaves, which are
+/// looked up by id when they come due rather than cast - see
+/// `BlindBandit::apply`.
+pub const SEISMIC_SENSE: &str = "toph_seismic_sense";
+pub const ROCK_PILLAR: &str = "toph_rock_pillar";
+pub const FIRST_METALBENDER: &str = "toph_first_metalbender";
+pub const BLIND_BANDIT: &str = "toph_blind_bandit";
 pub const BLIND_BANDIT_WAVE: &str = "toph_blind_bandit_wave";
 
 fn is_champion_id(sim: &StableSim<'_>, entity: usize) -> bool {
@@ -140,10 +144,10 @@ impl StableEffectType for RockPillar {
         let target = input.target_id;
         let damage = pillar_damage(&stat_of(sim, caster_id));
 
-        // The pillar comes up before the damage lands, which is the order the
-        // data file's `Combine` played them in. It is a buff rather than a
-        // detached animation because a Rust champion has no `view_effects` -
-        // see `super::vfx`.
+        // The pillar comes up before the damage lands. It rides the target
+        // as a buff rather than playing as a detached `view_effect`, so it
+        // follows whoever was hit and a killing blow cuts it short instead of
+        // letting it finish over the corpse - see `PILLAR_VFX_BUFF`.
         sim.add_buff(target, &BuffV1::timed(PILLAR_VFX_BUFF, PILLAR_VFX_TICKS));
 
         // Read before the hit: a tower is still owed the damage, it just has

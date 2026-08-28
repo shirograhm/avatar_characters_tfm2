@@ -1,90 +1,40 @@
 //! Toph Beifong — a melee earthbender who marks what she hits and cashes the
-//! marks in with everything else. Built on the same primitives as Ty Lee -
-//! named buffs as counters, and a slice of the per-tick match hook for the
-//! parts an effect cannot see - but unlike Wan and Ty Lee she carries no
-//! `.data_champion` at all: `champion.rs` is her definition, and `vfx.rs`
-//! draws what `view_buffs` used to.
+//! marks in with everything else. Built exactly like Wan and Ty Lee: a
+//! `.data_champion` for the shape of her - stats, the four action slots, and
+//! the animations `view_buffs` hangs on her buffs - native effects in
+//! `effects.rs` for what each of those actions does, named buffs as counters,
+//! and a slice of the per-tick match hook for the parts an effect cannot see.
 //!
-//! Every number the JSON held now lives here, which is the point of the port:
-//! the action shapes and the effect constants they feed are finally in one
-//! file, and the comments that used to say "keep the two in step" have nothing
-//! left to keep step with.
+//! What lives here is what the data layer has no way to express: the effect
+//! constants, and the handful of action numbers a hook has to know because it
+//! cannot read the JSON.
 
-use mod_api_stable::StatV1;
-
-pub mod champion;
 pub mod effects;
 /// Built but not registered while the progression freeze is being chased -
 /// see the note in `lib.rs`. Kept compiling so putting it back is one line.
-#[allow(dead_code)]
 pub mod player_ai;
 pub mod tick;
-pub mod vfx;
 
 // ------------------------------------------------ Defaults
 pub const CHAMPION_KEY: &str = "toph";
 
-/// Level 1, and what each level adds. She is built to be stood in front of:
-/// middling attack, real health and armor, and the magic power that everything
-/// but the basic attack scales off arriving faster than anything else.
-pub const BASE_STAT: StatV1 = StatV1 {
-    attack: 68,
-    magic_power: 10,
-    hp: 1010,
-    defence: 32,
-    magic_resistance: 22,
-    move_speed: 950,
-    hp_regen: 0,
-    stack: 0,
-    crit_chance: 0,
-};
-
-pub const GROWTH_STAT: StatV1 = StatV1 {
-    attack: 6,
-    magic_power: 11,
-    hp: 112,
-    defence: 9,
-    magic_resistance: 4,
-    move_speed: 3,
-    hp_regen: 0,
-    stack: 0,
-    crit_chance: 0,
-};
-
 // ------------------------------------------------ Action shapes
-/// How long each cast occupies her, when in that window the effect fires, and
-/// what it costs. `start_timing` is an offset into the animation, so it is the
-/// frame the swing connects on rather than a delay of its own.
+/// How long the recast occupies her, mirroring `skill2.duration` in
+/// `.data_champion`. The AI has no way to ask the engine whether a cast is
+/// still running, so after issuing the recast itself it goes quiet for exactly
+/// this long rather than issuing into an action already playing - keep the two
+/// in step.
 ///
-/// `METAL_ACTION_TICKS` is the one the AI reads as well as the engine: it has
-/// no way to ask whether a cast is still running, so after issuing the recast
-/// itself it goes quiet for exactly this long rather than issuing into an
-/// action already playing. It is the only cast this mod ever starts on its
-/// own; everything else the AI does is a re-aim of one the base AI had already
-/// decided to make.
-pub const ATTACK_ACTION_TICKS: usize = 24;
-pub const ATTACK_START_TIMING: usize = 8;
-pub const ATTACK_COOLTIME: usize = 60;
-
-pub const PILLAR_ACTION_TICKS: usize = 36;
-pub const PILLAR_START_TIMING: usize = 12;
-pub const PILLAR_COOLTIME: usize = 480;
-
+/// It is the only cast this mod ever starts on its own; everything else the AI
+/// does is a re-aim of one the base AI had already decided to make, which is
+/// why no other action's duration is needed here.
 pub const METAL_ACTION_TICKS: usize = 18;
-pub const METAL_START_TIMING: usize = 1;
-pub const METAL_COOLTIME: usize = 720;
-/// Two casts before the cooldown starts - the engine has no recast of its own,
-/// so this is what pays for one. See `METAL_ARMED_BUFF`.
-pub const METAL_USE_COUNT: usize = 2;
-
-pub const BANDIT_ACTION_TICKS: usize = 48;
-pub const BANDIT_START_TIMING: usize = 4;
-pub const BANDIT_COOLTIME: usize = 3600;
 
 // ------------------------------------------------ Seismic Sense (base attack)
 pub const ATTACK_AD_RATIO: usize = 100;
-/// What she can hit without walking first. The AI steers by it too, which is
-/// why it sits with the mark rather than with the action shape above.
+/// What she can hit without walking first, mirroring `attack.range` in
+/// `.data_champion`. The AI needs to know it and cannot read the data file -
+/// keep the two in step.
 pub const ATTACK_RANGE: u64 = 17_000;
 /// The mark itself. Champions only: a mark is a promise of a second, bigger
 /// hit, and a minion rarely lives to collect it.
@@ -100,15 +50,16 @@ pub const MARK_POP_VFX_TICKS: usize = 24;
 
 // ------------------------------------------------ Rock Pillar
 /// She bends the pillar up under someone rather than reaching them, so it
-/// outranges her fist by a good way.
+/// outranges her fist by a good way. Mirrors `skill.range` in
+/// `.data_champion`, and the AI reads it for the same reason as above.
 pub const PILLAR_RANGE: u64 = 45_000;
 pub const PILLAR_DAMAGE: usize = 50;
 pub const PILLAR_AP_RATIO: usize = 75;
 /// 1.25 seconds of airborne. Towers are excluded from the lift - there is
 /// nothing to pop - but they still take the hit.
 pub const PILLAR_AIRBORNE_TICKS: u64 = 75;
-/// The pillar itself. A `view_effect` in the data file, a buff worn by the
-/// target now that `crate::vfx` is what draws her - keep it equal to the
+/// The pillar itself: a buff worn by whoever the skill was aimed at, which the
+/// `view_buffs` table draws for as long as it is on them. Keep it equal to the
 /// sheet's 6 frames x 5 ticks or the last frame hangs.
 pub const PILLAR_VFX_BUFF: &str = "toph_rock_pillar_vfx";
 pub const PILLAR_VFX_TICKS: usize = 30;
@@ -124,9 +75,9 @@ pub const METAL_RESIST_HP_PERMILLE: usize = 15;
 
 /// The recast half of the ability, which the engine will not give her for
 /// free: an action is castable again only once its cooldown is up, and the
-/// armor's own window closes long before that. So skill2 carries
-/// `METAL_USE_COUNT` charges - two casts before the cooldown starts - and
-/// these two markers decide what each of them does.
+/// armor's own window closes long before that. So skill2 carries two charges -
+/// `cooltime_use_count` in `.data_champion`, which is two casts before the
+/// cooldown starts - and these two markers decide what each of them does.
 ///
 /// `ARMED` says the armor is on and the next cast is the detonation. `SPENT`
 /// says this cycle already detonated on its own timer, so the cast still in

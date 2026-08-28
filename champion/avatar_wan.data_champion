@@ -11,9 +11,9 @@
   "sprite": "asset/avatar_characters_tfm2/aseprite_resources/champions/avatar_wan",
   "anim_prefix": "",
   "skill_icons": [
-    "asset/avatar_characters_tfm2/icons/avatar_wan/skill",
-    "asset/avatar_characters_tfm2/icons/avatar_wan/skill2",
-    "asset/avatar_characters_tfm2/icons/avatar_wan/ult"
+    "asset/avatar_characters_tfm2/icons/avatar_wan_skill",
+    "asset/avatar_characters_tfm2/icons/avatar_wan_skill2",
+    "asset/avatar_characters_tfm2/icons/avatar_wan_ult"
   ],
   "stat": {
     "attack": 62,

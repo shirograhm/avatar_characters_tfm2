@@ -5,7 +5,6 @@ mod match_hook;
 mod toph;
 mod ty_lee;
 mod util;
-mod vfx;
 
 const MOD_ID: &str = "avatar_characters_tfm2";
 
@@ -35,21 +34,17 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_native_effect(ty_lee::BALANCING_ACT, ty_lee::BalancingAct);
     reg.add_native_effect(ty_lee::BALANCING_ACT_LAND, ty_lee::BalancingActLand);
 
-    // Toph is defined in Rust rather than in a `.data_champion`, so her four
-    // actions hold their effects directly and only the queued one still needs
-    // a name: `BlindBandit` schedules its follow-up waves through
-    // `sim.queue_effect`, which takes a registered id and nothing else.
-    reg.add_champion(toph::champion::Toph);
-    reg.add_native_effect(
-        toph::effects::BLIND_BANDIT_WAVE,
-        toph::effects::BlindBanditWave,
-    );
+    use toph::effects as toph;
+    reg.add_native_effect(toph::SEISMIC_SENSE, toph::SeismicSense);
+    reg.add_native_effect(toph::ROCK_PILLAR, toph::RockPillar);
+    reg.add_native_effect(toph::FIRST_METALBENDER, toph::FirstMetalbender);
+    reg.add_native_effect(toph::BLIND_BANDIT, toph::BlindBandit);
+    // Her ult schedules its follow-up shockwaves through `sim.queue_effect`,
+    // which takes a registered id and nothing else - so the wave needs a name
+    // of its own even though no action ever casts it.
+    reg.add_native_effect(toph::BLIND_BANDIT_WAVE, toph::BlindBanditWave);
 
     reg.set_match_hook(match_hook::ModTick);
-
-    // Draws what her `view_buffs` block used to. Nothing else in the mod needs
-    // the client, so the whole extension is hers.
-    reg.set_extension(vfx::Extension);
 
     // Keeps him in fights his kit is built to win. `matches` limits it to
     // Wan's own athletes, so no other champion's AI is touched.

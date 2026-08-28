@@ -14,13 +14,5 @@
   "asset/base/ui/banpick/champion_stat_icon#data": {
     "remapping": "asset/avatar_characters_tfm2/ui/banpick/champion_stat_icon#data",
     "type": "override"
-  },
-  "asset/base/aseprite_resources/champions/toph#sheet": {
-    "remapping": "asset/avatar_characters_tfm2/aseprite_resources/champions/toph#sheet",
-    "type": "override"
-  },
-  "asset/base/aseprite_resources/champions/toph#anim": {
-    "remapping": "asset/avatar_characters_tfm2/aseprite_resources/champions/toph#anim",
-    "type": "override"
   }
 }
