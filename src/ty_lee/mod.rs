@@ -57,7 +57,7 @@ pub const CHI_BLOCK_BREAK_VFX_TICKS: usize = 30;
 pub const STRIKE_COUNT: usize = 3;
 pub const STRIKE_INTERVAL: usize = 15;
 pub const STRIKE_DAMAGE: usize = 60;
-pub const STRIKE_AD_RATIO: usize = 30;
+pub const STRIKE_AD_RATIO: usize = 60;
 pub const STRIKE_CRIT_BONUS: usize = 20;
 
 // ------------------------------------------------ Lightfooted
@@ -71,7 +71,7 @@ pub const LIGHTFOOTED_RANGE: u64 = 40_000;
 pub const LIGHTFOOTED_BUFF: &str = "ty_lee_lightfooted";
 pub const LIGHTFOOTED_DURATION: usize = 4 * 60;
 pub const LIGHTFOOTED_SHIELD: usize = 100;
-pub const LIGHTFOOTED_SHIELD_AD_RATIO: usize = 20;
+pub const LIGHTFOOTED_SHIELD_AD_RATIO: usize = 50;
 pub const LIGHTFOOTED_SHIELD_HP_RATIO: usize = 10;
 /// Full mitigation: the ability is written as dodging basic attacks outright.
 pub const LIGHTFOOTED_DODGE: usize = 100;
@@ -79,7 +79,7 @@ pub const LIGHTFOOTED_DODGE: usize = 100;
 // ------------------------------------------------ Balancing Act
 pub const BALANCE_RANGE: u64 = 120_000;
 pub const BALANCE_DAMAGE: usize = 220;
-pub const BALANCE_AD_RATIO: usize = 80;
+pub const BALANCE_AD_RATIO: usize = 110;
 /// Crit chance is a flat damage term here, not a chance to do more: the ult
 /// hits for her crit chance on top of the rest, whether or not it rolls.
 pub const BALANCE_CRIT_RATIO: usize = 100;
@@ -95,7 +95,7 @@ pub const BALANCE_AOE_RADIUS: u64 = 30_000;
 /// A second one in the `end_effects` swaps that for `ult_impact` - the spin the
 /// AoE lands on - which is why the action's `duration` has to cover the longest
 /// dash plus that burst rather than the dash alone.
-pub const BALANCE_SILENCE_TICKS: u64 = 90;
+pub const BALANCE_SILENCE_TICKS: u64 = 120;
 /// Marker carried while the dash is still carrying her in, naming the target it
 /// owes: `ty_lee_balancing_act_inbound|<entity id>`. The hit lands from the
 /// `MoveToTarget`'s own `end_effects`, which fire on arrival however far she

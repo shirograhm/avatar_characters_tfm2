@@ -8,5 +8,8 @@ impl StableMatchHook for ModTick {
     fn on_match_tick(&self, sim: &mut StableSim<'_>, _rng_seed: u64) {
         crate::avatar_wan::tick::on_match_tick(sim);
         crate::ty_lee::tick::on_match_tick(sim);
+        // Last, so it re-seats the view buffs each champion's upkeep has just
+        // settled rather than a set one of them is about to change.
+        crate::vfx_refresh::on_match_tick(sim);
     }
 }

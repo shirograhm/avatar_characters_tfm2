@@ -4,6 +4,7 @@ mod avatar_wan;
 mod match_hook;
 mod ty_lee;
 mod util;
+mod vfx_refresh;
 
 const MOD_ID: &str = "avatar_characters_tfm2";
 
