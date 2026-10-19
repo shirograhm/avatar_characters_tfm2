@@ -1,7 +1,6 @@
 use mod_api_stable::*;
 
 mod avatar_wan;
-mod debug_log;
 mod match_hook;
 mod ty_lee;
 mod util;
