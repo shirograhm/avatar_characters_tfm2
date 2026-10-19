@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 
 mod avatar_wan;
+mod debug_log;
 mod match_hook;
 mod ty_lee;
 mod util;
@@ -27,7 +28,6 @@ fn init(host: &StableHost) -> StableMod {
 
     use ty_lee::effects as ty_lee;
     reg.add_native_effect(ty_lee::CHI_BLOCK_HIT, ty_lee::ChiBlocking);
-    reg.add_native_effect(ty_lee::CHI_BLOCK_STUN, ty_lee::ChiBlockStun);
     reg.add_native_effect(ty_lee::THREE_POINT_STRIKE, ty_lee::ThreePointStrike);
     reg.add_native_effect(ty_lee::THREE_POINT_STRIKE_HIT, ty_lee::ThreePointStrikeHit);
     reg.add_native_effect(ty_lee::LIGHTFOOTED, ty_lee::Lightfooted);

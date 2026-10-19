@@ -106,7 +106,7 @@
   "ult": {
     "action_name": "ult",
     "description": "#asset/base/text/champion?description.ty_lee.ult",
-    "duration": 54,
+    "duration": 44,
     "cooltime": 3300,
     "start_timing": 4,
     "cancelable": false,
@@ -124,11 +124,11 @@
         {
           "type": "CasterAnimation",
           "name": "ult_dash",
-          "tick": 32
+          "tick": 22
         },
         {
           "type": "MoveToTarget",
-          "speed": 4000,
+          "speed": 6000,
           "range": 120000,
           "end_effects": [
             {
@@ -141,6 +141,10 @@
               "tick": 20
             },
             {
+              "type": "CasterViewEffect",
+              "name": "ty_lee_ult_impact"
+            },
+            {
               "type": "Native",
               "effect_ref": "ty_lee_balancing_act_land"
             }
@@ -149,7 +153,15 @@
       ]
     }
   },
-  "view_effects": [],
+  "view_effects": [
+    {
+      "type": "Animation",
+      "name": "ty_lee_ult_impact",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_ult_impact",
+      "tag": "impact",
+      "z": -1
+    }
+  ],
   "view_buffs": [
     {
       "type": "Animated",
@@ -174,9 +186,9 @@
     },
     {
       "type": "Animated",
-      "name": "ty_lee_chi_block_break",
-      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block_break",
-      "tag": "break",
+      "name": "ty_lee_chi_block_stun",
+      "anim": "asset/avatar_characters_tfm2/effects/ty_lee_chi_block_stun",
+      "tag": "stun",
       "z": 1
     },
     {

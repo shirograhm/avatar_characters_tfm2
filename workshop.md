@@ -23,10 +23,10 @@ Wan channels Raava's full power, gaining a 300 (+60% AP) (+6% HP) health shield 
 
 [h2] Kit [/h2]
 [b]Chi Blocking[/b] (Basic Attack)
-Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 90 bonus magic damage and stun the target for 0.75 seconds.
+Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 90 (+15% AD) bonus magic damage and stun the target for 1.5 seconds.
 
 [b]Three Point Strike[/b] (Skill 1)
-Strike the target 3 times in quick succession, each dealing 60 (+60% AD) physical damage and applying Chi Block. These hits can critically strike for 20% bonus damage.
+Strike the target 3 times in quick succession, each dealing 60 (+60% AD) (+60% crit chance) physical damage and applying Chi Block.
 
 [b]Lightfooted[/b] (Skill 2)
 Dash a short distance in any direction, shielding herself for 100 (+50% AD) (+10% HP) health for 4 seconds. For the duration, she also dodges all basic attacks.

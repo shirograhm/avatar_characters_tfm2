@@ -37,10 +37,10 @@
 //! and a statless mirror that a reconciler rebuilds is what makes them blinkable
 //! too, and that is the next step if this one lands.
 //!
-//! The short timed ones - the splashes, the burn, the heal flash, the Chi Block
-//! break burst - need nothing. They are reapplied constantly, and a fresh buff
-//! on a unit that had none is an appearance under any reading, so they already
-//! come back on their own after a seek.
+//! The short timed ones - the splashes, the burn, the heal flash - need
+//! nothing. They are reapplied constantly, and a fresh buff on a unit that had
+//! none is an appearance under any reading, so they already come back on their
+//! own after a seek.
 //!
 //! ## Cadence
 //!

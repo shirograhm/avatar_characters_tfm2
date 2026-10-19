@@ -7,9 +7,26 @@ macro_rules! ticks {
     };
 }
 
+// Every constant here is compiled in and out of the in-game database editor's
+// reach - see the header of `crate::ty_lee` for why. Wan branches on his
+// attunement inside native code, so no action of his can shed its `Native`
+// node; what is editable in game is his `stat`, his `growth`, each action's
+// duration/cooltime/start_timing/range, and the few numbers that sit in data
+// nodes ahead of a `Native`, like Spirit Step's dash speed.
+
 // ------------------------------------------------ Soul of Raava
+/// Wan's attack splits its damage in half, and both halves scale off AD. That
+/// is why neither half is an `Attack`/`ApAttack` node in `.data_champion`,
+/// which would have made them editable: `ApAttack`'s ratio is read against
+/// Magic Power, and there is no data node for magic damage that scales off
+/// attack. The split has to stay here to keep scaling off the right stat.
 pub const ATTACK_MAGIC_SHARE: usize = 50;
 pub const ATTACK_PHYSICAL_SHARE: usize = 50;
+/// How often the AI should assume he gets an attack off, used only to value
+/// the ult (`convergence_attacks`). Deliberately below `attack.cooltime`, which
+/// is 70 in `.data_champion`: that field is the pre-attack-speed interval, and
+/// 50 is roughly what it becomes once he has built some. Retune it against the
+/// data file if that assumption changes - nothing keeps the two in step.
 pub const ATTACK_COOLTIME: usize = 50;
 
 // ------------------------------------------------ Elements
