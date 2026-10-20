@@ -120,13 +120,3 @@ pub fn enemies_near(
         .filter(|&id| id != center_id && sim.distance_sq(center_id, id) <= radius_sq)
         .collect()
 }
-
-/// Deterministic 0..99 roll derived from the seed the engine hands an effect.
-/// splitmix64 — the effect API guarantees the seed is reproducible, so every
-/// client replays the same rolls.
-pub fn rng_percent(seed: u64) -> usize {
-    let mut z = seed.wrapping_add(0x9e37_79b9_7f4a_7c15);
-    z = (z ^ (z >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);
-    z = (z ^ (z >> 27)).wrapping_mul(0x94d0_49bb_1331_11eb);
-    ((z ^ (z >> 31)) % 100) as usize
-}

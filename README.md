@@ -31,25 +31,25 @@ Wan channels Raava's full power, gaining a 300 (+60% AP) (+6% HP) health shield 
 
 **Chi Blocking** (Basic Attack)
 
-Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 90 bonus magic damage and stun the target for 0.75 seconds.
+Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 60 (+15% AD) bonus magic damage and stun the target for 1.5 seconds (6 second cooldown per target).
 
 **Three Point Strike** (Skill 1)
 
-Strike the target 3 times in quick succession, each dealing 60 (+30% AD) physical damage and applying Chi Block. These hits can critically strike for 20% bonus damage.
+Strike the target 3 times in quick succession, each dealing 60 (+60% AD) (+60% crit chance) physical damage and applying Chi Block.
 
 **Lightfooted** (Skill 2)
 
-Dash a short distance in any direction, shielding herself for 100 (+20% AD) (+10% HP) health for 4 seconds. For the duration, she also dodges all basic attacks.
+Dash a short distance in any direction, shielding herself for 100 (+50% AD) (+10% HP) health for 4 seconds. For the duration, she also dodges all basic attacks.
 
 **Balancing Act** (Ultimate)
 
-Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220 (+80% AD) (+100% crit chance) physical damage in a small area and silencing all champions hit for 1.5 seconds. Her next basic attack always critically strikes.
+Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220 (+110% AD) (+100% crit chance) physical damage in a small area and silencing all champions hit for 2 seconds. Her next basic attack within 8 seconds always critically strikes.
 
 # Important
 
-This mod currently supports the English locale only. You can use it with other languages, but the characters' names and skill descriptions will be broken.
+This mod currently supports the English and Korean locales. You can use it with other languages, but the characters' names and skill descriptions will be broken.
 
-If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
+If you would like to provide translations for another language, feel free to shoot me a message on Discord @shirograhm.
 
 # Known Issues
 

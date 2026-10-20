@@ -4,7 +4,6 @@ use super::*;
 use crate::util::{buff_stacks, has_buff, percent_of, stat_of};
 
 pub const CHI_BLOCK_HIT: &str = "ty_lee_chi_block_hit";
-pub const CHI_BLOCK_STUN: &str = "ty_lee_chi_block_stun";
 pub const THREE_POINT_STRIKE: &str = "ty_lee_three_point_strike";
 pub const THREE_POINT_STRIKE_HIT: &str = "ty_lee_three_point_strike_hit";
 pub const LIGHTFOOTED: &str = "ty_lee_lightfooted_cast";
@@ -16,11 +15,12 @@ fn is_champion_id(sim: &StableSim<'_>, entity: usize) -> bool {
         .is_some_and(|entity| entity.is_champion())
 }
 
-/// One stack of Chi Block; the fourth consumes the set. Only champions have chi
-/// to block - minions and towers take the hit itself and nothing more, so the
-/// stun needs no tower guard of its own down here.
+/// One stack of Chi Block; the fourth consumes the set, deals the bonus and
+/// stuns. Only champions have chi to block - minions and towers take the hit
+/// itself and nothing more - and a champion whose set broke in the last
+/// `CHI_BLOCK_COOLDOWN_TICKS` takes no stacks at all.
 fn apply_chi_block(sim: &mut StableSim<'_>, caster: usize, target: usize) {
-    if !is_champion_id(sim, target) {
+    if !is_champion_id(sim, target) || has_buff(sim, target, CHI_BLOCK_COOLDOWN_BUFF) {
         return;
     }
 
@@ -30,16 +30,15 @@ fn apply_chi_block(sim: &mut StableSim<'_>, caster: usize, target: usize) {
     }
 
     sim.entity_remove_buff(target, CHI_BLOCK_BUFF);
-    sim.deal_damage(
-        caster,
+    sim.add_buff(
         target,
-        0,
-        CHI_BLOCK_BONUS_MAGIC,
-        AttackTypeV1::Skill,
+        &BuffV1::timed(CHI_BLOCK_COOLDOWN_BUFF, CHI_BLOCK_COOLDOWN_TICKS),
     );
-    // The damage above is often what kills them, and a burst started on a
-    // corpse plays over its death animation instead of their death. A corpse
-    // is owed no hold either, so both halves go with it.
+    let bonus = chi_block_bonus(&stat_of(sim, caster));
+    sim.deal_damage(caster, target, 0, bonus, AttackTypeV1::Skill);
+    // The damage above is often what kills them, and a corpse is owed no
+    // stun. Zero health counts on its own: `is_alive` can still read true
+    // while the death animation runs.
     if !sim
         .get_entity(target)
         .is_some_and(|target| target.is_alive() && target.hp().0 > 0)
@@ -47,55 +46,27 @@ fn apply_chi_block(sim: &mut StableSim<'_>, caster: usize, target: usize) {
         return;
     }
 
+    hold(sim, target);
+}
+
+/// Chi Block's stun - see `CHI_BLOCK_HOLD`.
+fn hold(sim: &mut StableSim<'_>, target: usize) {
+    for kind in CHI_BLOCK_HOLD {
+        sim.apply_cc(target, &CcV1::of_kind(kind, CHI_BLOCK_STUN_TICKS as u64));
+    }
     sim.add_buff(
         target,
-        &BuffV1::timed(CHI_BLOCK_BREAK_VFX_BUFF, CHI_BLOCK_BREAK_VFX_TICKS),
-    );
-    // The hold lands as the burst finishes rather than on the hit that set it
-    // off, so the flourish is what visibly locks them up instead of playing
-    // over a stun already running. The delay is that burst's own length, so
-    // the two hand off on the same tick - see `CHI_BLOCK_BREAK_VFX_TICKS`.
-    sim.queue_effect(
-        CHI_BLOCK_STUN,
-        AttackTypeV1::Skill,
-        caster,
-        &InputTargetV1::target(target),
-        CHI_BLOCK_BREAK_VFX_TICKS,
+        &BuffV1::timed(CHI_BLOCK_STUN_VFX_BUFF, CHI_BLOCK_STUN_TICKS),
     );
 }
 
-/// The hold itself, replayed from the effect queue once the break burst has
-/// played out. Split off rather than applied inline because `apply_cc` takes
-/// hold the tick it is called, and the burst wants that half-second first.
-pub struct ChiBlockStun;
-
-impl StableEffectType for ChiBlockStun {
-    fn apply(
-        &self,
-        sim: &mut StableSim<'_>,
-        _rng_seed: u64,
-        _caster_id: usize,
-        input: InputTargetV1,
-    ) {
-        // Half a second is long enough to die in, and the burst is not what
-        // was holding them - anything could have finished them meanwhile.
-        let target = input.target_id;
-        if sim
-            .get_entity(target)
-            .is_some_and(|target| target.is_alive())
-        {
-            sim.apply_cc(target, &CcV1::stun(CHI_BLOCK_STUN_TICKS));
-        }
-    }
-
-    fn expected_cc_time(&self) -> Option<usize> {
-        Some(CHI_BLOCK_STUN_TICKS as usize)
-    }
+fn chi_block_bonus(caster_stat: &StatV1) -> usize {
+    CHI_BLOCK_BONUS_MAGIC + percent_of(caster_stat.attack, CHI_BLOCK_BONUS_AD_RATIO)
 }
 
 /// Average bonus magic damage per attack, for the AI's damage estimate.
-fn chi_block_expected_magic() -> usize {
-    CHI_BLOCK_BONUS_MAGIC / CHI_BLOCK_MAX_STACKS
+fn chi_block_expected_magic(caster_stat: &StatV1) -> usize {
+    chi_block_bonus(caster_stat) / CHI_BLOCK_MAX_STACKS
 }
 
 pub struct ChiBlocking;
@@ -141,35 +112,25 @@ impl StableEffectType for ChiBlocking {
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
         (
             percent_of(caster_stat.attack, ATTACK_AD_RATIO),
-            chi_block_expected_magic(),
+            chi_block_expected_magic(caster_stat),
         )
     }
 
     fn expected_cc_time(&self) -> Option<usize> {
-        Some(CHI_BLOCK_STUN_TICKS as usize / CHI_BLOCK_MAX_STACKS)
+        Some(CHI_BLOCK_STUN_TICKS / CHI_BLOCK_MAX_STACKS)
     }
 }
 
+/// One strike: flat damage, her AD, and a share of her crit chance - see
+/// `STRIKE_CRIT_RATIO`.
 fn strike_damage(caster_stat: &StatV1) -> usize {
-    STRIKE_DAMAGE + percent_of(caster_stat.attack, STRIKE_AD_RATIO)
+    STRIKE_DAMAGE
+        + percent_of(caster_stat.attack, STRIKE_AD_RATIO)
+        + percent_of(caster_stat.crit_chance, STRIKE_CRIT_RATIO)
 }
 
-/// One of the three strikes. Skill damage does not crit through the engine's
-/// own pipeline, so the roll happens here off the deterministic seed.
-///
-/// `index` is which of the three this is, and it is what makes them roll
-/// independently. The follow-ups arrive as queued effects, and there is no
-/// guarantee the engine hands each one a different seed - if it derives the
-/// seed from the cast, all three would share it and crit together or not at
-/// all, which is not "a chance on each hit". Offsetting by the index is exactly
-/// how splitmix64 is meant to be walked, so the three rolls decorrelate.
-fn strike(sim: &mut StableSim<'_>, rng_seed: u64, index: u64, caster: usize, target: usize) {
-    let stat = stat_of(sim, caster);
-    let mut damage = strike_damage(&stat);
-    if crate::util::rng_percent(rng_seed.wrapping_add(index)) < stat.crit_chance {
-        damage += percent_of(damage, STRIKE_CRIT_BONUS);
-    }
-
+fn strike(sim: &mut StableSim<'_>, caster: usize, target: usize) {
+    let damage = strike_damage(&stat_of(sim, caster));
     sim.deal_damage(caster, target, damage, 0, AttackTypeV1::Skill);
     apply_chi_block(sim, caster, target);
 }
@@ -180,7 +141,7 @@ impl StableEffectType for ThreePointStrike {
     fn apply(
         &self,
         sim: &mut StableSim<'_>,
-        rng_seed: u64,
+        _rng_seed: u64,
         caster_id: usize,
         input: InputTargetV1,
     ) {
@@ -188,39 +149,28 @@ impl StableEffectType for ThreePointStrike {
             return;
         }
 
-        strike(sim, rng_seed, 0, caster_id, input.target_id);
+        strike(sim, caster_id, input.target_id);
 
         for index in 1..STRIKE_COUNT {
-            // `x` carries which strike this is, so the follow-up can offset its
-            // own roll off it. Wan's burn passes its scale the same way.
-            let queued = InputTargetV1 {
-                x: index as u64,
-                ..InputTargetV1::target(input.target_id)
-            };
             sim.queue_effect(
                 THREE_POINT_STRIKE_HIT,
                 AttackTypeV1::Skill,
                 caster_id,
-                &queued,
+                &InputTargetV1::target(input.target_id),
                 index * STRIKE_INTERVAL,
             );
         }
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
-        let per_strike = strike_damage(caster_stat)
-            + percent_of(
-                percent_of(strike_damage(caster_stat), STRIKE_CRIT_BONUS),
-                caster_stat.crit_chance,
-            );
         (
-            per_strike * STRIKE_COUNT,
-            chi_block_expected_magic() * STRIKE_COUNT,
+            strike_damage(caster_stat) * STRIKE_COUNT,
+            chi_block_expected_magic(caster_stat) * STRIKE_COUNT,
         )
     }
 
     fn expected_cc_time(&self) -> Option<usize> {
-        Some(CHI_BLOCK_STUN_TICKS as usize * STRIKE_COUNT / CHI_BLOCK_MAX_STACKS)
+        Some(CHI_BLOCK_STUN_TICKS * STRIKE_COUNT / CHI_BLOCK_MAX_STACKS)
     }
 }
 
@@ -231,11 +181,11 @@ impl StableEffectType for ThreePointStrikeHit {
     fn apply(
         &self,
         sim: &mut StableSim<'_>,
-        rng_seed: u64,
+        _rng_seed: u64,
         caster_id: usize,
         input: InputTargetV1,
     ) {
-        strike(sim, rng_seed, input.x, caster_id, input.target_id);
+        strike(sim, caster_id, input.target_id);
     }
 
     fn expected_damage(&self, caster_stat: &StatV1) -> (usize, usize) {
@@ -459,12 +409,12 @@ fn mark_crit_buff() -> BuffV1 {
     buff
 }
 
-/// The arrival half of Balancing Act, fired by the `MoveTo`'s `end_effects` on
-/// the tick the dash actually lands - so the damage and the silence hit when
-/// she gets there, however far she had to travel. The target is read back off
-/// the marker the cast left rather than re-picked here: by now she has moved,
-/// and the healthiest champion near where she landed need not be the one she
-/// dashed at.
+/// The arrival half of Balancing Act, fired by the `MoveToTarget`'s
+/// `end_effects` on the tick the dash actually lands - so the damage and the
+/// silence hit when she gets there, however far she had to travel. The target
+/// is read back off the marker the cast left rather than re-picked here: by now
+/// she has moved, and the healthiest champion near where she landed need not be
+/// the one she dashed at.
 pub struct BalancingActLand;
 
 impl StableEffectType for BalancingActLand {
@@ -509,7 +459,7 @@ impl StableEffectType for BalancingAct {
         input: InputTargetV1,
     ) {
         // The mark lands either way, so an ult that loses its target on the way
-        // in still buys her a guaranteed crit and a double Chi Block.
+        // in still buys her a guaranteed crit.
         sim.add_buff(caster_id, &mark_buff());
 
         // `casting_target` is EnemyChampion, so the engine has already screened
