@@ -409,12 +409,12 @@ fn mark_crit_buff() -> BuffV1 {
     buff
 }
 
-/// The arrival half of Balancing Act, fired by the `MoveTo`'s `end_effects` on
-/// the tick the dash actually lands - so the damage and the silence hit when
-/// she gets there, however far she had to travel. The target is read back off
-/// the marker the cast left rather than re-picked here: by now she has moved,
-/// and the healthiest champion near where she landed need not be the one she
-/// dashed at.
+/// The arrival half of Balancing Act, fired by the `MoveToTarget`'s
+/// `end_effects` on the tick the dash actually lands - so the damage and the
+/// silence hit when she gets there, however far she had to travel. The target
+/// is read back off the marker the cast left rather than re-picked here: by now
+/// she has moved, and the healthiest champion near where she landed need not be
+/// the one she dashed at.
 pub struct BalancingActLand;
 
 impl StableEffectType for BalancingActLand {
@@ -459,7 +459,7 @@ impl StableEffectType for BalancingAct {
         input: InputTargetV1,
     ) {
         // The mark lands either way, so an ult that loses its target on the way
-        // in still buys her a guaranteed crit and a double Chi Block.
+        // in still buys her a guaranteed crit.
         sim.add_buff(caster_id, &mark_buff());
 
         // `casting_target` is EnemyChampion, so the engine has already screened

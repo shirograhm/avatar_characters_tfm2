@@ -111,13 +111,15 @@ pub const STRIKE_AD_RATIO: usize = 60;
 pub const STRIKE_CRIT_RATIO: usize = 60;
 
 // ------------------------------------------------ Lightfooted
-/// She dashes to whatever is closest, either team. The player AI makes the
-/// pick and a `Rush` in `.data_champion` carries her - the same pairing
-/// Balancing Act uses, because a native effect cannot move its own caster.
+/// She dashes at a Chi Blocked enemy, else the nearest enemy champion, else -
+/// outside her combo - whatever is closest, either team. The player AI makes
+/// the pick and a `MoveTo` in `.data_champion` carries her - the same pairing
+/// Balancing Act uses with its `MoveToTarget`, because a native effect cannot
+/// move its own caster.
 pub const LIGHTFOOTED_RANGE: u64 = 40_000;
 /// Carries `base_attack_damaged_reduce`, the engine's own basic-attack
-/// mitigation, so the dodge needs no hook on the way in. Taking it back off
-/// does need one - see `tick`.
+/// mitigation, so the dodge needs no hook: it goes on with the buff and comes
+/// off when the buff's own timer runs out.
 pub const LIGHTFOOTED_BUFF: &str = "ty_lee_lightfooted";
 pub const LIGHTFOOTED_DURATION: usize = 4 * 60;
 pub const LIGHTFOOTED_SHIELD: usize = 100;

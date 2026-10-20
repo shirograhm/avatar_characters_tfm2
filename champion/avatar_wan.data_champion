@@ -339,13 +339,6 @@
       "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_convergence",
       "tag": "convergence",
       "z": 1
-    },
-    {
-      "type": "Animated",
-      "name": "wan_attack_convergence_comet",
-      "anim": "asset/avatar_characters_tfm2/effects/wan_projectile_convergence_comet",
-      "tag": "convergence",
-      "z": 1
     }
   ]
 }

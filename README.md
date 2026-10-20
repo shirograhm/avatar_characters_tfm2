@@ -31,7 +31,7 @@ Wan channels Raava's full power, gaining a 300 (+60% AP) (+6% HP) health shield 
 
 **Chi Blocking** (Basic Attack)
 
-Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 90 (+15% AD) bonus magic damage and stun the target for 1.5 seconds.
+Strike the target for 100% AD physical damage, applying a stack of Chi Block to enemy champions, up to 4 times. The fourth stack consumes them all to deal 60 (+15% AD) bonus magic damage and stun the target for 1.5 seconds (6 second cooldown per target).
 
 **Three Point Strike** (Skill 1)
 
@@ -47,9 +47,9 @@ Ty Lee dashes to the highest health enemy champion within 120 range, dealing 220
 
 # Important
 
-This mod currently supports the English locale only. You can use it with other languages, but the characters' names and skill descriptions will be broken.
+This mod currently supports the English and Korean locales. You can use it with other languages, but the characters' names and skill descriptions will be broken.
 
-If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
+If you would like to provide translations for another language, feel free to shoot me a message on Discord @shirograhm.
 
 # Known Issues
 
